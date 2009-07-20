@@ -7,6 +7,7 @@ using System.Xml;
 using Blogical.Shared.Adapters.Common.Schedules;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.SSO.Utility;
 
 namespace Blogical.Shared.Adapters.Sftp
 {
@@ -29,7 +30,8 @@ namespace Blogical.Shared.Adapters.Sftp
         int _sshPort                = 22;
         string _sshUser             = String.Empty;
         string _sshIdentityFile     = String.Empty;
-      
+        string _ssoApplication      = String.Empty;
+
         string _sshFileMask         = String.Empty;
         string _sshRemotePath       = String.Empty;
         bool _sshtrace              = false;
@@ -77,6 +79,13 @@ namespace Blogical.Shared.Adapters.Sftp
         public string SSHIdentityFile
         {
             get { return this._sshIdentityFile; }
+        }
+        /// <summary>
+        /// The Single Sign On (SSO) Affiliate Application
+        /// </summary>
+        public string SSOApplication
+        {
+            get { return this._ssoApplication; }
         }
         /// <summary>
         /// Indicates the type of files to download from the server
@@ -203,12 +212,23 @@ namespace Blogical.Shared.Adapters.Sftp
             
             XmlDocument endpointConfig = ExtractConfigDomImpl(config, true);
 
+            this._ssoApplication = Extract(endpointConfig, "/Config/ssoapplication", String.Empty);
+
+            if (!String.IsNullOrEmpty(this._ssoApplication))
+            {
+                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+            }
+            else
+            {
+                this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
+                this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
+            }
+
             this._sshHost = Extract(endpointConfig, "/Config/host", String.Empty);
-            this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
             this._sshPort = ExtractInt(endpointConfig, "/Config/port");
-            this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
             this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile", String.Empty);
-        
+
             this._sshFileMask = Extract(endpointConfig, "/Config/filemask", String.Empty);
             this._sshRemotePath = Extract(endpointConfig, "/Config/remotepath", String.Empty);
             this._sshtrace = ExtractBool(endpointConfig, "/Config/trace");
@@ -247,6 +267,8 @@ namespace Blogical.Shared.Adapters.Sftp
             this._afterGetFilename = IfExistsExtract(endpointConfig, "/Config/aftergetfilename", string.Empty);
 
             this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
+
+            
         }
         /// <summary>
         /// Read the Blogical.Shared.Adapters.Sftp.Management.ReceiveLocation.xsd and populate 
@@ -256,11 +278,22 @@ namespace Blogical.Shared.Adapters.Sftp
         public void ReadLocationConfiguration(XmlDocument endpointConfig)
         {
             TraceMessage("[SftpReceiverEndpoint] ReadLocationConfiguration called");
-            
+
+            this._ssoApplication = Extract(endpointConfig, "/Config/ssoapplication", String.Empty);
+
+            if (!String.IsNullOrEmpty(this._ssoApplication))
+            {
+                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+            }
+            else
+            {
+                this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
+                this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
+            }
+
             this._sshHost = Extract(endpointConfig, "/Config/host", String.Empty);
-            this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
             this._sshPort = ExtractInt(endpointConfig, "/Config/port");
-            this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
             this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile", String.Empty);
    
             this._sshFileMask = Extract(endpointConfig, "/Config/filemask", String.Empty);

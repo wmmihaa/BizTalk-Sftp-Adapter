@@ -26,7 +26,8 @@ namespace Blogical.Shared.Adapters.Sftp
         int     _sshPort                = 22;
         string  _sshUser                = String.Empty;
         string  _sshIdentityFile        = String.Empty;
-        bool _sshtrace = false;
+        string _ssoApplication          = String.Empty;
+        bool _sshtrace                  = false;
 
         string _sshRemotePath           = String.Empty;
         string _sshRemoteTempDir        = String.Empty;
@@ -78,6 +79,13 @@ namespace Blogical.Shared.Adapters.Sftp
         public string SSHIdentityFile
         {
             get { return this._sshIdentityFile; }
+        }
+        /// <summary>
+        /// The Single Sign On (SSO) Affiliate Application
+        /// </summary>
+        public string SSOApplication
+        {
+            get { return this._ssoApplication; }
         }
         /// <summary>
         /// The current path to the SFTP server

@@ -73,6 +73,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Microsoft.BizTalk.GlobalPropertySchemas.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.BizTalk.Interop.SSOClient, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Microsoft.BizTalk.Interop.SSOClient.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.BizTalk.Interop.TransportProxy, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.BizTalk.Interop.TransportProxy.dll</HintPath>
@@ -122,6 +126,7 @@
     <Compile Include="SharpSsh\MemoryOutputStream.cs" />
     <Compile Include="SharpSsh\MemoryInputStream.cs" />
     <Compile Include="SharpSsh\Sftp.cs" />
+    <Compile Include="SSOConfigHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Blogical.Shared.Adapters.Common\Blogical.Shared.Adapters.Common.csproj">
