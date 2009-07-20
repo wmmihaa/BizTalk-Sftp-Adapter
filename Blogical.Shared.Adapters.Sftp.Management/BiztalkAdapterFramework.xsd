@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- Copyright (c) 1999-2002 Microsoft Corporation. All rights reserved.   -->
+<!--                                                                       -->
+<!-- THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY -->
+<!-- KIND, WHETHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE  -->
+<!-- IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR -->
+<!-- PURPOSE. THE ENTIRE RISK OF USE OR RESULTS IN CONNECTION WITH THE USE -->
+<!-- OF THIS CODE AND INFORMATION REMAINS WITH THE USER.                   -->
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<xs:schema targetNamespace="BiztalkAdapterFramework.xsd" elementFormDefault="qualified" xmlns="BiztalkAdapterFramework.xsd" xmlns:baf="BiztalkAdapterFramework.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="designer">
+    <xs:annotation>
+      <xs:documentation>The &lt;designer&gt; elements provide
+            a way for altering the display of individual fields by
+            a visual designer such as BizTalk Studio.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="category" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Sets the field's CategoryAttribute.
+                        This attribute specifies the category in which
+                        the field can be displayed in a visual designer like
+                        BizTalk Studio. A visual designer uses categories
+                        to organize fields into groups of similar behavior.
+                        </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="description" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Sets the field's
+                        DescriptionAttribute.  This attribute specifies the
+                        description of the field. A visual designer can
+                        display the specified description when referencing
+                        the field.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="displayname" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>Sets the field's
+                        DisplayNameAttribute.  This attribute specifies the
+                        display name of the field. A visual designer can
+                        display the specified display name when referencing
+                        the field as the field's name.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="readonly">
+          <xs:annotation>
+            <xs:documentation>Sets the field's ReadOnlyAttribute.
+                        This attribute specifies whether the field is
+                        read-only or read/write at design time. Fields marked
+                        as read-only (fixed=true) cannot be changed.  Fields marked
+                        as read/write (fixed=false) can be changed.  A visual
+                        designer can display read-only marked field with dimmed
+                        text.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="fixed" type="xs:boolean" default="true" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="browsable">
+          <xs:annotation>
+            <xs:documentation>Sets the field's BrowsableAttribute.
+                        This attribute specifies whether the field is
+                        shown in the visual designer.  Fields marked
+                        as browsable (show=true) may be displayed.  Fields
+                        marked as hidden (show=false) may not be displayed.
+                        </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="show" type="xs:boolean" default="true" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="converter">
+          <xs:annotation>
+            <xs:documentation>Sets the field's TypeConverterAttribute.
+                        This attribute specifies the type converter to use when
+                        converting the field's value to or from other types.  A
+                        visual designer may use a type converter to better display
+                        a field's value.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="assembly" type="xs:string" use="optional" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="editor">
+          <xs:annotation>
+            <xs:documentation>Sets the field's UITypeEditorAttribute.
+                        This attribute specifies the type editor to use when
+                        modifying the field's value.  A visual designer may use
+                        the specified editor instead of the default editor based
+                        on the field's type.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="assembly" type="xs:string" use="optional" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="SSOList">
+    <xs:annotation>
+      <xs:documentation>Definition of Single Sign On (SSO) dynamic list type.</xs:documentation>
+      <xs:appinfo>
+        <baf:designer>
+          <baf:description>Single Sign On (SSO) list of available applications.</baf:description>
+        </baf:designer>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="FileName">
+    <xs:annotation>
+      <xs:documentation>Provide a means of specifying a file.</xs:documentation>
+      <xs:appinfo>
+        <baf:designer>
+          <baf:description>Open or define local file name.</baf:description>
+        </baf:designer>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="FolderName">
+    <xs:annotation>
+      <xs:documentation>Provide a means of specifying a folder.</xs:documentation>
+      <xs:appinfo>
+        <baf:designer>
+          <baf:description>Open or define local folder name.</baf:description>
+        </baf:designer>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="Password">
+    <xs:annotation>
+      <xs:documentation>Provide a "PasswordChar" type text box for entering passwords in
+            a visual designer.</xs:documentation>
+      <xs:appinfo>
+        <baf:designer>
+          <baf:description>Enter password</baf:description>
+        </baf:designer>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <!-- Service Organization Tree schema used by Add Adapter Wizard -->
+  <xs:element name="CategoryTree" type="CategoryTree" />
+  <xs:complexType name="CategoryTree">
+    <xs:sequence>
+      <xs:element name="DisplayName" type="xs:string" />
+      <xs:element name="DisplayDescription" type="xs:string" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ExpandableCategoryTreeNode" type="ExpandableCategoryTreeNode" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="CategoryTreeNode" type="CategoryTreeNode" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="ServiceTreeNode" type="ServiceTreeNode" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExpandableCategoryTreeNode">
+    <xs:sequence>
+      <xs:element name="DisplayName" type="xs:string" />
+      <xs:element name="Description" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="NodeIdentifier" type="xs:string" use="required">
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="CategoryTreeNode">
+    <xs:sequence>
+      <xs:element name="DisplayName" type="xs:string" />
+      <xs:element name="Description" type="xs:string" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ExpandableCategoryTreeNode" type="ExpandableCategoryTreeNode" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="CategoryTreeNode" type="CategoryTreeNode" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="ServiceTreeNode" type="ServiceTreeNode" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ServiceTreeNode">
+    <xs:sequence>
+      <xs:element name="DisplayName" type="xs:string" />
+      <xs:element name="Description" type="xs:string" />
+      <xs:element name="WSDLReference" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
