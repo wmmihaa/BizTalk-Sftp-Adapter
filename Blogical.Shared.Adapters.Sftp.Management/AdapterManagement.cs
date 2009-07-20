@@ -181,10 +181,12 @@ namespace Blogical.Shared.Adapters.Sftp.Management
 
             XmlNode nodePassword = GetNode(doc, "password", false);
             XmlNode nodeIdentityFile = GetNode(doc, "identityfile", false);
+            XmlNode nodeSsoApplication = GetNode(doc, "ssoapplication", false);
 
             if (((nodePassword == null) || (nodePassword.InnerText.Length == 0)) &&
-                ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)))
-                throw new Exception("You must specify either Password or Identityfile");
+                ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)) &&
+                ((nodeSsoApplication == null) || (nodeSsoApplication.InnerText.Length == 0)))
+                throw new Exception("You must specify either Password, Identityfile or SSO Application");
 
 
             StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
@@ -235,11 +237,12 @@ namespace Blogical.Shared.Adapters.Sftp.Management
             }
             XmlNode nodePassword = GetNode(doc, "password", false);
             XmlNode nodeIdentityFile = GetNode(doc, "identityfile", false);
+            XmlNode nodeSsoApplication = GetNode(doc, "ssoapplication", false);
 
             if (((nodePassword == null) || (nodePassword.InnerText.Length == 0)) &&
-                ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)))
-                throw new Exception("You must specify either Password or Identityfile");
-
+                ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)) &&
+                ((nodeSsoApplication == null) || (nodeSsoApplication.InnerText.Length == 0)))
+                throw new Exception("You must specify either Password, Identityfile or SSO Application");
 
             StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
             if (nodePort.InnerText.Length > 0)
