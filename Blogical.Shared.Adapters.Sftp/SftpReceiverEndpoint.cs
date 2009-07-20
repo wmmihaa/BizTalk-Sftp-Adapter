@@ -288,7 +288,7 @@ namespace Blogical.Shared.Adapters.Sftp
             BatchHandler batchHandler = null;
             long bytesInBatch = 0;
             List<Blogical.Shared.Adapters.Sftp.FileEntry> fileEntries = null;
-
+             
             try
             {
                 TraceMessage("[SftpReceiverEndpoint] PickupFilesAndSubmit called [" + this._properties.Uri + "]");
