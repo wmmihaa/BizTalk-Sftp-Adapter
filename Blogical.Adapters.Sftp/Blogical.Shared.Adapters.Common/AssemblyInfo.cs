@@ -23,12 +23,12 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("")]
+[assembly: AssemblyTitle("Blogical.Shared.Adapters.Sftp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Microsoft BizTalk Server 2006")]
-[assembly: AssemblyCopyright("Copyright (C) Microsoft Corporation. All rights reserved.")]
+[assembly: AssemblyCompany("Blogical")]
+[assembly: AssemblyProduct("Blogical.Shared.Adapters.Sftp")]
+[assembly: AssemblyCopyright("Copyright © Blogical 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
