@@ -214,7 +214,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                     else
                     {
                         TraceMessage("[SftpConnectionPool] ReleaseConnectionToPool releasing connection to pool");
-                        conn.Disconnect();
+                        //conn.Disconnect();
                         this.Connections.Insert(0, conn);
                         Monitor.Pulse(this.Connections);
                     }
