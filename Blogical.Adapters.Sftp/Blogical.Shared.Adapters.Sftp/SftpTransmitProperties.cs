@@ -218,17 +218,29 @@ namespace Blogical.Shared.Adapters.Sftp
         /// <param name="endpointConfig"></param>
         public void ReadLocationConfiguration(XmlDocument endpointConfig)
         {
+            this._sshtrace = ExtractBool(endpointConfig, "/Config/trace");
+
             TraceMessage("[SftpTransmitProperties] ReadLocationConfiguration called");
 
-            this._ssoApplication = Extract(endpointConfig, "/Config/ssoapplication", String.Empty);
+            this._ssoApplication = IfExistsExtract(endpointConfig, "/Config/ssoapplication", String.Empty);
 
             if (!String.IsNullOrEmpty(this._ssoApplication))
             {
-                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
-                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                TraceMessage("[SftpTransmitProperties] SSO Authentication");
+                try
+                {
+                    this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                    this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(@"Unable to read properties from SSO database. Make sure to use ""UserName"" and ""Password"" as fields", e);
+                }
             }
             else
             {
+                TraceMessage("[SftpTransmitProperties] Username/Password Authentication");
+                
                 this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
                 this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
             }
@@ -239,8 +251,7 @@ namespace Blogical.Shared.Adapters.Sftp
             this._sshHost = Extract(endpointConfig, "/Config/host", String.Empty);
             this._sshPort = ExtractInt(endpointConfig, "/Config/port");
             this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile",String.Empty);
-            this._sshtrace = ExtractBool(endpointConfig, "/Config/trace");
-
+            
             this._sshRemotePath = Extract(endpointConfig, "/Config/remotepath", String.Empty);
             this._sshRemoteTempDir = IfNotEmptyExtract(endpointConfig, "/Config/remotetempdir",false, String.Empty);
             this._sshRemoteFile = Extract(endpointConfig, "/Config/remotefile", String.Empty);
@@ -259,18 +270,29 @@ namespace Blogical.Shared.Adapters.Sftp
         /// <param name="context"></param>
         public void ReadLocationConfiguration(IBaseMessageContext context)
         {
-            TraceMessage("[SftpTransmitProperties] ReadLocationConfiguration called");
             string propertyNS = "Blogical.Shared.Adapters.Sftp.TransmitLocation.v1";
-
+            this._sshtrace = (bool)Extract(context, "trace", propertyNS, false, false);
+            
+            TraceMessage("[SftpTransmitProperties] ReadLocationConfiguration called");
+            
             this._ssoApplication = (string)Extract(context, "ssoapplication", propertyNS, String.Empty, false);
          
             if (!String.IsNullOrEmpty(this._ssoApplication))
             {
-                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
-                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                TraceMessage("[SftpTransmitProperties] SSO Authentication");
+                try
+                {
+                    this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                    this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(@"Unable to read properties from SSO database. Make sure to use ""UserName"" and ""Password"" as fields", e);
+                }
             }
             else
             {
+                TraceMessage("[SftpTransmitProperties] Username/Password Authentication");
                 this._sshUser = (string)Extract(context, "user", propertyNS, String.Empty, true);
                 this._sshPasswordProperty = (string)Extract(context, "password", propertyNS, String.Empty, false);
             }
@@ -281,7 +303,6 @@ namespace Blogical.Shared.Adapters.Sftp
             this._sshHost = (string)Extract(context, "host", propertyNS, String.Empty, true);
             this._sshPort = (int)Extract(context, "portno", propertyNS, 22, true);
             this._sshIdentityFile = (string)Extract(context, "identityfile", propertyNS, String.Empty, false);
-            this._sshtrace = (bool)Extract(context, "trace", propertyNS, false, false);
             this._sshRemotePath = (string)Extract(context, "remotepath", propertyNS, String.Empty, false);
             this._sshRemoteTempDir = (string)Extract(context, "remotetempdir", propertyNS, String.Empty, false);
             this._sshRemoteFile = (string)Extract(context, "remotefile", propertyNS, String.Empty, true);

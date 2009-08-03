@@ -212,12 +212,20 @@ namespace Blogical.Shared.Adapters.Sftp
             
             XmlDocument endpointConfig = ExtractConfigDomImpl(config, true);
 
-            this._ssoApplication = Extract(endpointConfig, "/Config/ssoapplication", String.Empty);
+            this._ssoApplication = IfExistsExtract(endpointConfig, "/Config/ssoapplication", String.Empty);
 
             if (!String.IsNullOrEmpty(this._ssoApplication))
             {
-                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
-                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                TraceMessage("[SftpReceiverEndpoint] SSO Authetication");
+                try
+                {
+                    this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                    this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(@"Unable to read properties from SSO database. Make sure to use ""UserName"" and ""Password"" as fields", e);
+                }
             }
             else
             {
@@ -279,15 +287,24 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             TraceMessage("[SftpReceiverEndpoint] ReadLocationConfiguration called");
 
-            this._ssoApplication = Extract(endpointConfig, "/Config/ssoapplication", String.Empty);
+            this._ssoApplication = IfExistsExtract(endpointConfig, "/Config/ssoapplication", String.Empty);
 
             if (!String.IsNullOrEmpty(this._ssoApplication))
             {
-                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
-                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                TraceMessage("[SftpReceiverEndpoint] SSO Authetication");
+                try
+                {
+                    this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                    this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(@"Unable to read properties from SSO database. Make sure to use ""UserName"" and ""Password"" as fields", e);  
+                }
             }
             else
             {
+                TraceMessage("[SftpReceiverEndpoint] Username/Password Authentication");
                 this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
                 this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
             }
