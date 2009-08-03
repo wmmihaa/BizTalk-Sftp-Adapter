@@ -2,7 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{DF04C866-E7F5-4D96-860B-E4D6A9ACBDC1}"
 	ProjectSection(SolutionItems) = preProject
-		Blogical.Shared.Adapters.Sftp_v1.3.doc = Blogical.Shared.Adapters.Sftp_v1.3.doc
 		CreateTable.sql = CreateTable.sql
 	EndProjectSection
 EndProject
