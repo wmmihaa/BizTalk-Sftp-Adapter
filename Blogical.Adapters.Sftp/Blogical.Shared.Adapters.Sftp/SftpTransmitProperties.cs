@@ -7,6 +7,7 @@ using Microsoft.BizTalk.Message.Interop;
 using Microsoft.BizTalk.Component.Interop;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.SSO.Utility;
 
 namespace Blogical.Shared.Adapters.Sftp
 {
@@ -219,10 +220,24 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             TraceMessage("[SftpTransmitProperties] ReadLocationConfiguration called");
 
+            this._ssoApplication = Extract(endpointConfig, "/Config/ssoapplication", String.Empty);
+
+            if (!String.IsNullOrEmpty(this._ssoApplication))
+            {
+                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+            }
+            else
+            {
+                this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
+                this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
+            }
+
+            //this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
+            //this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
+            
             this._sshHost = Extract(endpointConfig, "/Config/host", String.Empty);
-            this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
             this._sshPort = ExtractInt(endpointConfig, "/Config/port");
-            this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
             this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile",String.Empty);
             this._sshtrace = ExtractBool(endpointConfig, "/Config/trace");
 
@@ -247,10 +262,24 @@ namespace Blogical.Shared.Adapters.Sftp
             TraceMessage("[SftpTransmitProperties] ReadLocationConfiguration called");
             string propertyNS = "Blogical.Shared.Adapters.Sftp.TransmitLocation.v1";
 
+            this._ssoApplication = (string)Extract(context, "ssoapplication", propertyNS, String.Empty, false);
+         
+            if (!String.IsNullOrEmpty(this._ssoApplication))
+            {
+                this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
+                this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+            }
+            else
+            {
+                this._sshUser = (string)Extract(context, "user", propertyNS, String.Empty, true);
+                this._sshPasswordProperty = (string)Extract(context, "password", propertyNS, String.Empty, false);
+            }
+         
+            // this._sshUser = (string)Extract(context, "user", propertyNS, String.Empty, true);
+            // this._sshPasswordProperty = (string)Extract(context, "password", propertyNS, String.Empty, false);
+            
             this._sshHost = (string)Extract(context, "host", propertyNS, String.Empty, true);
-            this._sshPasswordProperty = (string)Extract(context, "password", propertyNS, String.Empty, false);
             this._sshPort = (int)Extract(context, "portno", propertyNS, 22, true);
-            this._sshUser = (string)Extract(context, "user", propertyNS, String.Empty, true);
             this._sshIdentityFile = (string)Extract(context, "identityfile", propertyNS, String.Empty, false);
             this._sshtrace = (bool)Extract(context, "trace", propertyNS, false, false);
             this._sshRemotePath = (string)Extract(context, "remotepath", propertyNS, String.Empty, false);

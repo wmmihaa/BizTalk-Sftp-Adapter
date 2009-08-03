@@ -98,8 +98,6 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         /// <param name="destination"></param>
         public void Put(System.IO.Stream memStream, string destination)
         {
-            
-
             try
             {
   
