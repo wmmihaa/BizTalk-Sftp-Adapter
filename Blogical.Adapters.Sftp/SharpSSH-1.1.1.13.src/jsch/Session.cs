@@ -212,26 +212,38 @@ namespace Tamir.SharpSsh.jsch
 
 					i=0;
 					j=0;
-					while(i<buf.buffer.Length)
-					{
-						j=io.getByte();
-						if(j<0)break;
-						buf.buffer[i]=(byte)j; i++;
-						if(j==10)break;
-					}
-					if(j<0)
-					{
-						throw new JSchException("connection is closed by foreign host");
-					}
+                    bool done = false;
 
-					if(buf.buffer[i-1]==10)
-					{    // 0x0a
-						i--;
-						if(buf.buffer[i-1]==13)
-						{  // 0x0d
-							i--;
-						}
-					}
+                    while (!done)
+                    {
+                        while (i < buf.buffer.Length)
+                        {
+                            j = io.getByte();
+                            if (j < 0) break;
+                            buf.buffer[i] = (byte)j; i++;
+                            if (j == 10) break;
+                        }
+                        if (j < 0)
+                        {
+                            throw new JSchException("connection is closed by foreign host");
+                        }
+
+                        if (buf.buffer[i - 1] == 10)
+                        {    // 0x0a
+                            i--;
+                            if (buf.buffer[i - 1] == 13)
+                            {  // 0x0d
+                                i--;
+                            }
+                        }
+
+                        // Added support for empty cr/lf lines in sever response
+                        // If empty line, go on to next line
+                        if (i == 0)
+                            done = false;
+                        else
+                            done = true;
+                    }
 
 					if(i>4 && (i!=buf.buffer.Length) &&
 						(buf.buffer[0]!='S'||buf.buffer[1]!='S'||
