@@ -105,6 +105,8 @@
   <ItemGroup>
     <Content Include="App.ico" />
     <Content Include="jsch\examples\README.txt" />
+    <Content Include="ref\DiffieHellman.dll" />
+    <Content Include="ref\Org.Mentalis.Security.dll" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -519,9 +521,6 @@
     <EmbeddedResource Include="jsch\examples\util\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ref\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
