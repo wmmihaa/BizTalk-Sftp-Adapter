@@ -261,7 +261,7 @@ namespace Blogical.Shared.Adapters.Sftp.Management
         internal static XmlNode GetRequiredNode(XmlDocument doc, string field, string error)
         {
             XmlNode nodeHost = doc.SelectSingleNode("/Config/" + field);
-            if ((nodeHost == null) || (nodeHost.InnerText.Length == 0))
+            if ((nodeHost == null) || String.IsNullOrEmpty(nodeHost.InnerText.Trim()))
             {
                 throw new Exception(error);
             }
@@ -304,5 +304,5 @@ namespace Blogical.Shared.Adapters.Sftp.Management
         {
             return GetNode(doc, field, true);
         }
-    } 
+    }
 }

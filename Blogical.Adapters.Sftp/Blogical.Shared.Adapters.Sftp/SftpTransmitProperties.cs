@@ -22,26 +22,26 @@ namespace Blogical.Shared.Adapters.Sftp
         private static int _handlerbufferSize = 4096;
         private static int _handlerthreadsPerCPU = 1;
 
-        string  _sshHost                = String.Empty;
-        string  _sshPasswordProperty    = String.Empty;
-        int     _sshPort                = 22;
-        string  _sshUser                = String.Empty;
-        string  _sshIdentityFile        = String.Empty;
-        string _ssoApplication          = String.Empty;
-        bool _sshtrace                  = false;
+        string _sshHost = String.Empty;
+        string _sshPasswordProperty = String.Empty;
+        int _sshPort = 22;
+        string _sshUser = String.Empty;
+        string _sshIdentityFile = String.Empty;
+        string _ssoApplication = String.Empty;
+        bool _sshtrace = false;
 
-        string _sshRemotePath           = String.Empty;
-        string _sshRemoteTempDir        = String.Empty;
-        string _sshRemoteFile           = String.Empty;
-        int _sshErrorThreshold          = 10;
-        int _connectionLimit            = 10;
+        string _sshRemotePath = String.Empty;
+        string _sshRemoteTempDir = String.Empty;
+        string _sshRemoteFile = String.Empty;
+        int _sshErrorThreshold = 10;
+        int _connectionLimit = 10;
         string _applySecurityPermissions = String.Empty;
         bool _verifyFileSize = false;
         #endregion
         #region Public Properties
         //public static int BufferSize { get { return _handlerbufferSize; } }
         //public static int ThreadsPerCPU { get { return _handlerthreadsPerCPU; } }
-        
+
         /// <summary>
         /// Size of entire batch
         /// </summary>
@@ -93,12 +93,12 @@ namespace Blogical.Shared.Adapters.Sftp
         /// </summary>
         public string RemotePath
         {
-            get 
-            { 
-                if(this._sshRemotePath.EndsWith("/"))
+            get
+            {
+                if (this._sshRemotePath.EndsWith("/"))
                     return this._sshRemotePath;
                 else
-                    return this._sshRemotePath+"/";
+                    return this._sshRemotePath + "/";
             }
         }
         /// <summary>
@@ -106,14 +106,14 @@ namespace Blogical.Shared.Adapters.Sftp
         /// </summary>
         public string RemoteTempDir
         {
-            get 
+            get
             {
                 if (this._sshRemoteTempDir.Length == 0)
                     return this._sshRemoteTempDir;
-                else if(this._sshRemoteTempDir.EndsWith("/"))
+                else if (this._sshRemoteTempDir.EndsWith("/"))
                     return this._sshRemoteTempDir;
                 else
-                    return this._sshRemoteTempDir+"/";
+                    return this._sshRemoteTempDir + "/";
             }
         }
         /// <summary>
@@ -142,9 +142,9 @@ namespace Blogical.Shared.Adapters.Sftp
         /// </summary>
         public string Uri
         {
-            get 
+            get
             {
-                return CommonFunctions.CombinePath("SFTP://" + this.SSHHost + ":" + this.SSHPort, this.RemotePath, this.RemoteFile); 
+                return CommonFunctions.CombinePath("SFTP://" + this.SSHHost + ":" + this.SSHPort, this.RemotePath, this.RemoteFile);
             }
         }
         /// <summary>
@@ -168,7 +168,7 @@ namespace Blogical.Shared.Adapters.Sftp
         }
 
         private string _sshRemoteTempFile;
-        
+
         public string RemoteTempFile
         {
             get { return _sshRemoteTempFile; }
@@ -191,7 +191,7 @@ namespace Blogical.Shared.Adapters.Sftp
         /// <param name="message"></param>
         /// <param name="propertyNamespace"></param>
         public SftpTransmitProperties(IBaseMessage message, string propertyNamespace)
-		{
+        {
             XmlDocument locationConfigDom = null;
 
             //  get the adapter configuration off the message
@@ -209,8 +209,8 @@ namespace Blogical.Shared.Adapters.Sftp
             {
                 this.ReadLocationConfiguration(message.Context);
             }
-		}
- 
+        }
+
         /// <summary>
         /// Read the Blogical.Shared.Adapters.Sftp.Management.TransmitLocation.xsd and populate 
         /// all properties 
@@ -240,20 +240,20 @@ namespace Blogical.Shared.Adapters.Sftp
             else
             {
                 TraceMessage("[SftpTransmitProperties] Username/Password Authentication");
-                
+
                 this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
                 this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
             }
 
             //this._sshUser = Extract(endpointConfig, "/Config/user", String.Empty);
             //this._sshPasswordProperty = IfExistsExtract(endpointConfig, "/Config/password", String.Empty);
-            
+
             this._sshHost = Extract(endpointConfig, "/Config/host", String.Empty);
             this._sshPort = ExtractInt(endpointConfig, "/Config/port");
-            this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile",String.Empty);
-            
+            this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile", String.Empty);
+
             this._sshRemotePath = Extract(endpointConfig, "/Config/remotepath", String.Empty);
-            this._sshRemoteTempDir = IfNotEmptyExtract(endpointConfig, "/Config/remotetempdir",false, String.Empty);
+            this._sshRemoteTempDir = IfNotEmptyExtract(endpointConfig, "/Config/remotetempdir", false, String.Empty);
             this._sshRemoteFile = Extract(endpointConfig, "/Config/remotefile", String.Empty);
             this._sshErrorThreshold = ExtractInt(endpointConfig, "/Config/errorThreshold");
             this._connectionLimit = ExtractInt(endpointConfig, "/Config/connectionlimit");
@@ -272,11 +272,11 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             string propertyNS = "Blogical.Shared.Adapters.Sftp.TransmitLocation.v1";
             this._sshtrace = (bool)Extract(context, "trace", propertyNS, false, false);
-            
+
             TraceMessage("[SftpTransmitProperties] ReadLocationConfiguration called");
-            
+
             this._ssoApplication = (string)Extract(context, "ssoapplication", propertyNS, String.Empty, false);
-         
+
             if (!String.IsNullOrEmpty(this._ssoApplication))
             {
                 TraceMessage("[SftpTransmitProperties] SSO Authentication");
@@ -296,10 +296,10 @@ namespace Blogical.Shared.Adapters.Sftp
                 this._sshUser = (string)Extract(context, "user", propertyNS, String.Empty, true);
                 this._sshPasswordProperty = (string)Extract(context, "password", propertyNS, String.Empty, false);
             }
-         
+
             // this._sshUser = (string)Extract(context, "user", propertyNS, String.Empty, true);
             // this._sshPasswordProperty = (string)Extract(context, "password", propertyNS, String.Empty, false);
-            
+
             this._sshHost = (string)Extract(context, "host", propertyNS, String.Empty, true);
             this._sshPort = (int)Extract(context, "portno", propertyNS, 22, true);
             this._sshIdentityFile = (string)Extract(context, "identityfile", propertyNS, String.Empty, false);
@@ -319,9 +319,9 @@ namespace Blogical.Shared.Adapters.Sftp
         public static void ReadTransmitHandlerConfiguration(XmlDocument configDOM)
         {
             // Handler properties
-            _handlerSendBatchSize   = ExtractInt(configDOM, "/Config/sendBatchSize");
-            _handlerbufferSize      = ExtractInt(configDOM, "/Config/bufferSize");
-            _handlerthreadsPerCPU   = ExtractInt(configDOM, "/Config/threadsPerCPU");
+            _handlerSendBatchSize = ExtractInt(configDOM, "/Config/sendBatchSize");
+            _handlerbufferSize = ExtractInt(configDOM, "/Config/bufferSize");
+            _handlerthreadsPerCPU = ExtractInt(configDOM, "/Config/threadsPerCPU");
         }
         /// <summary>
         /// Determines the name of the file that should be created for a transmitted message
@@ -333,7 +333,7 @@ namespace Blogical.Shared.Adapters.Sftp
         public static string CreateFileName(IBaseMessage message, string uri)
         {
             //string uriNew = ReplaceMessageID(message, uri);
-            return ReplaceMacros(message,uri);
+            return ReplaceMacros(message, uri);
         }
         #endregion
         #region Private Methods
@@ -353,11 +353,27 @@ namespace Blogical.Shared.Adapters.Sftp
                     string filePath = GetReceivedFileName(message);
                     sourceFileName = Path.GetFileName(filePath);
                 }
-                catch 
+                catch
                 {
                     throw new Exception("The %SourceFileName% macro can only be used with the " + Constants.SFTP_ADAPTER_PROPERTIES_NAMESPACE + " namespace.");
                 }
                 uri = uri.Replace("%SourceFileName%", sourceFileName);
+            }
+
+            /* John C. Vestal 2010/04/07 - Added DateTime and UniversalDateTime to macro list. */
+            if (uri.IndexOf("%DateTime%") > -1)
+            {
+                string dateTime = DateTime.Now.ToString();
+
+                uri = uri.Replace("%DateTime%", dateTime);
+                uri = uri.Replace("/", "-");
+            }
+            if (uri.IndexOf("%UniversalDateTime%") > -1)
+            {
+                string dateTime = DateTime.Now.ToUniversalTime().ToString();
+
+                uri = uri.Replace("%UniversalDateTime%", dateTime);
+                uri = uri.Replace("/", "-");
             }
 
             return uri;
