@@ -52,8 +52,15 @@ select 0 as WorkInProcess";
                 
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {
-                connection.Open();
-
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Unable to open the Blogical database used for Load balancing. Information about the load balancing feature can be found in the helpifile. If you do not wish to use load balancing you can disable it on the Receive Location transport properties in the Administration Console.",
+                        ex);
+                }
                 SqlTransaction transaction;
                 SqlCommand command = connection.CreateCommand();
 
@@ -178,9 +185,16 @@ where [URI] = '{0}' ";
             // This connectionstring doesn't need to be Integrated Security=SSPI, but the user that runs the
             // thread of execution for this service needs to have those rights due to an unfourtunate design
             // in BtsCatalogExplorer. Thus it makes sense that the connectionstring alse be integrated authentication.
-
-            string connectionString = ConfigurationManager.ConnectionStrings["Blogical.Shared.Adapters.Sftp"].ConnectionString;
-            return connectionString;
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Blogical.Shared.Adapters.Sftp"].ConnectionString;
+                return connectionString;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to find the connection string to the Blogical database used for Load balancing. Information about the load balancing feature can be found in the helpifile. If you do not wish to use load balancing you can disable it on the Receive Location transport properties in the Administration Console.",
+                            ex);
+            }
         }
         #endregion
     }

@@ -22,7 +22,7 @@ namespace Blogical.Shared.Adapters.Sftp
         #region Constants
         private const string MESSAGE_BODY = "body";
         private const string REMOTEFILENAME = "FileName";
-        private const string EMPTYBATCHFILENAME= "EmptyBatch.xml";
+        private const string EMPTYBATCHFILENAME = "EmptyBatch.xml";
         #endregion
         #region Private Fields
         object _perfCounterObject = null;
@@ -32,7 +32,7 @@ namespace Blogical.Shared.Adapters.Sftp
         bool _useLoadBalancing;
         IBTTransportProxy _transportProxy;
         ArrayList _filesInProcess = null;
-        bool _traceFlag=false;
+        bool _traceFlag = false;
         List<BatchMessage> _files = new List<BatchMessage>();
 
         #endregion
@@ -82,7 +82,7 @@ namespace Blogical.Shared.Adapters.Sftp
             {
                 throw ExceptionHandling.HandleComponentException(
                     EventLogEventIDs.UnableToSubmitBizTalkMessage,
-                    System.Reflection.MethodBase.GetCurrentMethod(),ex);
+                    System.Reflection.MethodBase.GetCurrentMethod(), ex);
             }
         }
         /// <summary>
@@ -103,7 +103,7 @@ namespace Blogical.Shared.Adapters.Sftp
 
                 // This class is used to track the files associated with this ReceiveBatch. The
                 // OnBatchComplete will be raised when BizTalk has consumed the message.
-                using ( ReceiveBatch batch = new ReceiveBatch(this._transportProxy, control, this.OnBatchComplete, Files.Count))
+                using (ReceiveBatch batch = new ReceiveBatch(this._transportProxy, control, this.OnBatchComplete, Files.Count))
                 {
                     foreach (BatchMessage file in Files)
                     {
@@ -138,7 +138,7 @@ namespace Blogical.Shared.Adapters.Sftp
             try
             {
                 TraceMessage("[SftpReceiverEndpoint] Reading file to stream " + fileName);
-                
+
                 // Retrieves the message from sftp server.
                 stream = this._sftp.Get(fileName);
                 stream.Position = 0;
@@ -158,9 +158,9 @@ namespace Blogical.Shared.Adapters.Sftp
 
                 // Write/Promote any adapter specific properties on the message context
                 message.Context.Write(REMOTEFILENAME, this._propertyNamespace, (object)fileName);
-                
+
                 SetReceivedFileName(message, fileName);
-        
+
                 message.Context.Write("ReceivedFileName", "http://schemas.microsoft.com/BizTalk/2003/" +
                     this._transportType.ToLower() + "-properties", fileName);
 
@@ -170,18 +170,18 @@ namespace Blogical.Shared.Adapters.Sftp
                 this.Files.Add(new BatchMessage(message, fileName, BatchOperationType.Submit, afterGetAction, afterGetFilename));
 
                 // Add the size of the file to the stream
-                if(message.BodyPart.Data.CanWrite)
+                if (message.BodyPart.Data.CanWrite)
                     message.BodyPart.Data.SetLength(size);
-                
+
                 return message;
             }
             catch (Exception ex)
             {
-                TraceMessage("[SftpReceiverEndpoint] Error Adding file ["+fileName+"]to batch. Error: " + ex.Message);
-                
+                TraceMessage("[SftpReceiverEndpoint] Error Adding file [" + fileName + "]to batch. Error: " + ex.Message);
+
                 if (this._useLoadBalancing)
                     DataBaseHelper.CheckInFile(uri, Path.GetFileName(fileName), this._traceFlag);
-                
+
                 return null;
             }
         }
@@ -198,8 +198,8 @@ namespace Blogical.Shared.Adapters.Sftp
             try
             {
 
-                string errorMessageFormat="<?xml version=\"1.0\" encoding=\"utf-8\"?><Error message=\"Empty Batch\" datetime=\"{0}\" source=\"{1}\"/>";
-                string errorMessage = String.Format(errorMessageFormat,DateTime.Now.ToString(), uri);
+                string errorMessageFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error message=\"Empty Batch\" datetime=\"{0}\" source=\"{1}\"/>";
+                string errorMessage = String.Format(errorMessageFormat, DateTime.Now.ToString(), uri);
 
                 UTF8Encoding utf8Encoding = new UTF8Encoding();
                 byte[] messageBuffer = utf8Encoding.GetBytes(errorMessage);
@@ -238,7 +238,7 @@ namespace Blogical.Shared.Adapters.Sftp
         }
         #endregion
         #region Private Methods
-        
+
         private void SetReceivedFileName(IBaseMessage pInMsg, string receivedFilename)
         {
             SystemMessageContext messageContext = new SystemMessageContext(pInMsg.Context);
@@ -247,7 +247,7 @@ namespace Blogical.Shared.Adapters.Sftp
                 Constants.BIZTALK_FILE_PROPERTIES_NAMESPACE, receivedFilename);
 
             pInMsg.Context.Write("ReceivedFileName",
-                Constants.SFTP_ADAPTER_PROPERTIES_NAMESPACE,receivedFilename);
+                Constants.SFTP_ADAPTER_PROPERTIES_NAMESPACE, receivedFilename);
 
             pInMsg.Context.Write("ReceivedFileName",
                 "http://schemas.microsoft.com/BizTalk/2003/" +
@@ -294,6 +294,22 @@ namespace Blogical.Shared.Adapters.Sftp
                                     {
                                         string renameFileName = CommonFunctions.CombinePath(Path.GetDirectoryName(fileName), batchMessage.AfterGetFilename);
                                         renameFileName = renameFileName.Replace("%SourceFileName%", Path.GetFileName(fileName));
+                                        /* John C. Vestal 2010/04/07 - Added DateTime and UniversalDateTime to macro list. */
+                                        if (renameFileName.IndexOf("%DateTime%") > -1)
+                                        {
+                                            string dateTime = DateTime.Now.ToString();
+
+                                            renameFileName = renameFileName.Replace("%DateTime%", dateTime);
+                                            renameFileName = renameFileName.Replace("/", "-");
+                                        }
+                                        if (renameFileName.IndexOf("%UniversalDateTime%") > -1)
+                                        {
+                                            string dateTime = DateTime.Now.ToUniversalTime().ToString();
+
+                                            renameFileName = renameFileName.Replace("%UniversalDateTime%", dateTime);
+                                            renameFileName = renameFileName.Replace("/", "-");
+                                        }
+
                                         this._sftp.Rename(fileName, renameFileName);
                                     }
                                 }
@@ -324,7 +340,7 @@ namespace Blogical.Shared.Adapters.Sftp
             {
                 Trace.WriteLine(string.Format("[SftpReceiverEndpoint] OnBatchComplete EXCEPTION!"));
                 this._filesInProcess.Remove(fileName);
-                throw ExceptionHandling.HandleComponentException(System.Reflection.MethodBase.GetCurrentMethod(),e);
+                throw ExceptionHandling.HandleComponentException(System.Reflection.MethodBase.GetCurrentMethod(), e);
             }
             finally
             {

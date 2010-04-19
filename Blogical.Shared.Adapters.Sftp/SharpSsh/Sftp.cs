@@ -445,7 +445,7 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
                     string fileName = entry.getFilename();
                     DateTime fileLastWriten;
 
-                    if (isDirectory)
+                    if (isDirectory || size==0)
                         continue;
 
                     try
