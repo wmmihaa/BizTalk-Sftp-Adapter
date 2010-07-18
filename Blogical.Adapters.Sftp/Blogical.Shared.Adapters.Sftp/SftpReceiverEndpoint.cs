@@ -307,7 +307,9 @@ namespace Blogical.Shared.Adapters.Sftp
                                         this._properties.SSHPasswordProperty,
                                         this._properties.SSHIdentityFile,
                                         this._properties.SSHPort,
-                                        this._properties.SSHPassphrase);
+                                        this._properties.SSHPassphrase,
+                                        this._properties.DebugTrace);
+
 
                 string uri = this._properties.UseLoadBalancing ? this._properties.Uri : null;
 

@@ -12,15 +12,6 @@ using Blogical.Shared.Adapters.Common;
 
 namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
 {
-    //internal class SftpHostCollectionFactory
-    //{
-    //    public static SftpHostCollection Load() 
-    //    {
-    //    }
-    //    public static void Save(SftpHostCollection sftpHostCollection) 
-    //    { }
-    
-    //}
     /// <summary>
     /// 
     /// </summary>
@@ -41,9 +32,9 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
             {
                 return;
             }
-            
-   
         }
+        
+
         /// <summary>
         /// Prepopulates the SftpConnectionPool with servers defined in config file.
         /// </summary>
@@ -81,14 +72,22 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
         /// </summary>
         /// <param name="hostName"></param>
         /// <returns></returns>
-        public static SftpHost GetHostByName(string hostName, bool trace)
+        public static SftpHost GetHostByName(string hostName, bool trace, int connectionLimit)
         {
             lock (_hosts.SyncRoot)
             {
                 foreach (SftpHost host in _hosts)
                 {
                     if (host.HostName == hostName)
+                    {
+                        if (host.ConnectionLimit != connectionLimit)
+                        {
+                            host.ConnectionLimit = connectionLimit;
+                            if (trace)
+                                Trace.WriteLineIf(trace, "[SftpConnectionPool] Overriding connection pool settings");
+                        }
                         return host;
+                    }
                 }
 
                 SftpHost newHost = new SftpHost(hostName, DefaultConnectionLimit, trace);
@@ -171,6 +170,12 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
         {
             while (!shutdownRequested)
             {
+                if (this.ConnectionLimit == 0)
+                {
+                    TraceMessage("[SftpConnectionPool] GetConnectionFromPool creating a new connection (not from pool)");
+                    ISftp sftp = new SharpSsh.Sftp(this.HostName, username, password, identityFile, port, passphrase, this._trace);
+                    return sftp;
+                }
                 lock (this.Connections)
                 {
                     if (this.Connections.Count != 0)
@@ -183,7 +188,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                     if (this._currentCount < this.ConnectionLimit)
                     {
                         TraceMessage("[SftpConnectionPool] GetConnectionFromPool creating a new connection for pool");
-                        ISftp sftp = new SharpSsh.Sftp(this.HostName, username, password, identityFile, port, passphrase);
+                        ISftp sftp = new SharpSsh.Sftp(this.HostName, username, password, identityFile, port, passphrase, this._trace);
                         this._currentCount++;
                         return sftp;
                     }
@@ -202,6 +207,14 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
         {
             if (conn != null)
             {
+                if (this.ConnectionLimit == 0)
+                {
+                    TraceMessage("[SftpConnectionPool] Disposing connection object (no connection pool is used)");
+                    conn.Disconnect();
+                    conn.Dispose();
+                    return;
+                }
+
                 lock (this.Connections)
                 {
                     if (this._currentCount > this.ConnectionLimit)

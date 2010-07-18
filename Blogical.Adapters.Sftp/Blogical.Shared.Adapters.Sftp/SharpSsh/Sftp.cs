@@ -33,6 +33,7 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         string _passphrase = String.Empty;
         #endregion
         #region ISftp Members
+        public bool DebugTrace { get; set; }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,7 +46,7 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         /// <created>2007-04-01 - Mikael Hkansson</created>
         /// <history>2007-10-11 - Mikael Hkansson, Added code head to all public methods</history>
         /// <history>2008-11-23 - Johan Hedberg, Added passphrase</history>
-        public Sftp(string host, string user, string password, string identityFile, int port, string passphrase)
+        public Sftp(string host, string user, string password, string identityFile, int port, string passphrase, bool debugTrace)
         {
             this._applicationStorage = ApplicationStorageHelper.Load();
             this._sftp = new SshTransfer(host, user, password);
@@ -55,6 +56,7 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
             this._password=password;
             this._port = port;
             this._passphrase = passphrase;
+            this.DebugTrace = debugTrace;
         }
         /// <summary>
         /// Used for receiving files
@@ -282,6 +284,8 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         /// </summary>
         public void Disconnect()
         {
+            if(this.DebugTrace)
+                Trace.WriteLine("[SftpConnectionPool] Disconnecting from " + _host);
             try
             {
                 if (this._sftp.Connected)
@@ -363,6 +367,9 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
             {
                 if (!this._sftp.Connected || force)
                 {
+                    if (this.DebugTrace)
+                        Trace.WriteLine("[SftpConnectionPool] Connecting to " + _host);
+
                     if (!String.IsNullOrEmpty(_identityFile) && !String.IsNullOrEmpty(_passphrase))
                         _sftp.AddIdentityFile(_identityFile, _passphrase);
                     else if (!String.IsNullOrEmpty(_identityFile))
@@ -393,7 +400,7 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         private void reConnect()
         {
             Disconnect();
-            Trace.WriteLine("[SftpReceiverEndpoint] Reconnecting to " + _host);
+            Trace.WriteLine("[SftpConnectionPool] Reconnecting to " + _host);
             connect(false);
         }
         void RaiseOnDisconnect()
