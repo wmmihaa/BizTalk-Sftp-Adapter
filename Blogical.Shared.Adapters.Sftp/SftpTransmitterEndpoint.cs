@@ -28,6 +28,7 @@ namespace Blogical.Shared.Adapters.Sftp
         private SftpTransmitProperties _properties = null;
         private AsyncTransmitter _asyncTransmitter = null;
         private string _propertyNamespace;
+        int _errorCount; //  error count for comparison with the error threshold
         #endregion
         #region Construktor
         public SftpTransmitterEndpoint(AsyncTransmitter asyncTransmitter)
@@ -61,7 +62,7 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             
             this._properties = new SftpTransmitProperties(message, _propertyNamespace);
-            ISftp sftp = SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace).GetConnection(this._properties.SSHUser, this._properties.SSHPasswordProperty, this._properties.SSHIdentityFile, this._properties.SSHPort, this._shutdownRequested, this._properties.SSHPassphrase);
+            ISftp sftp = SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace, this._properties.ConnectionLimit).GetConnection(this._properties.SSHUser, this._properties.SSHPasswordProperty, this._properties.SSHIdentityFile, this._properties.SSHPort, this._shutdownRequested, this._properties.SSHPassphrase);
 
             try
             {
@@ -72,18 +73,20 @@ namespace Blogical.Shared.Adapters.Sftp
             }
             catch (Exception ex)
             {
+                //CheckErrorThreshold();
+                TraceMessage("[SftpTransmitterEndpoint] Exception: " + ex.Message);
                 throw ExceptionHandling.HandleComponentException(System.Reflection.MethodBase.GetCurrentMethod(),ex);
             }
             finally
             {
-                SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace).ReleaseConnection(sftp);
+                SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace, this._properties.ConnectionLimit).ReleaseConnection(sftp);
             }
             return null;
         }
 
         void sftp_OnDisconnect(ISftp sftp)
         {
-            SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace).ReleaseConnection(sftp);
+            SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace, this._properties.ConnectionLimit).ReleaseConnection(sftp);
         }
         /// <summary>
         /// Executed on termination (Stop Host instance)
@@ -119,7 +122,6 @@ namespace Blogical.Shared.Adapters.Sftp
                 Stream source = message.BodyPart.Data;
                 source.Position = 0;
 
-
                 if (this._properties.RemoteTempFile.Trim().Length > 0) // Temp dir + Temp file
                     filePath = SftpTransmitProperties.CreateFileName(message, CommonFunctions.CombinePath(this._properties.RemoteTempDir, this._properties.RemoteTempFile));
                 else if (this._properties.RemoteTempDir.Trim().Length > 0) // Temp dir + file
@@ -149,7 +151,7 @@ namespace Blogical.Shared.Adapters.Sftp
             catch (Exception ex)
             {
                 string innerEx = ex.InnerException == null ? "" : ex.InnerException.Message;
-                throw new SftpException("Unable to transmit file " + filePath + ".\nInner Exception:\n"+ex.Message+"\n"+innerEx, ex);
+                throw new SftpException("[SftpTransmitterEndpoint] Unable to transmit file " + filePath + ".\nInner Exception:\n" + ex.Message + "\n" + innerEx, ex);
             }
             
 		}
@@ -181,6 +183,27 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             if (this._properties.DebugTrace)
                 Trace.WriteLine(message);
+        }
+        /// <summary>
+        /// If ErrorThreshold exeeds number of exceptions the location will be stopped.
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckErrorThreshold()
+        {
+            this._errorCount++;
+            if ((0 != this._properties.ErrorThreshold) && (this._errorCount > this._properties.ErrorThreshold))
+            {
+                this._asyncTransmitter.Terminate();
+
+                ExceptionHandling.CreateEventLogMessage(
+                    String.Format("[SftpTransmitterEndpoint] Error threshold exceeded {0}. Port is shutting down.\nURI: {1}", this._properties.ErrorThreshold.ToString(), this._properties.Uri),
+                    EventLogEventIDs.GeneralUnknownError,
+                    0,
+                    EventLogEntryType.Warning);
+
+                return false;
+            }
+            return true;
         }
         #endregion
     }
