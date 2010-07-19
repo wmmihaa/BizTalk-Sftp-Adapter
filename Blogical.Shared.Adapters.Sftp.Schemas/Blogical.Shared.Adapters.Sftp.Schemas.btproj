@@ -73,6 +73,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Schema Include="EmptyBatch.xsd">
+      <TypeName>EmptyBatch</TypeName>
+      <Namespace>Blogical.Shared.Adapters.Sftp.Schemas</Namespace>
+    </Schema>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\BizTalk\BizTalkC.targets" />
