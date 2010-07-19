@@ -198,7 +198,8 @@ namespace Blogical.Shared.Adapters.Sftp
             try
             {
 
-                string errorMessageFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error message=\"Empty Batch\" datetime=\"{0}\" source=\"{1}\"/>";
+                //string errorMessageFormat = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error message=\"Empty Batch\" datetime=\"{0}\" source=\"{1}\"/>";
+                string errorMessageFormat = "<bLogical:EmptyBatch message=\"Empty Batch\" datetime=\"{0}\" source=\"{1}\" xmlns:bLogical=\"http://Blogical.Shared.Adapters.Sftp.Schemas.EmptyBatch\" />";
                 string errorMessage = String.Format(errorMessageFormat, DateTime.Now.ToString(), uri);
 
                 UTF8Encoding utf8Encoding = new UTF8Encoding();
