@@ -27,7 +27,7 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs06.codeplex.com/
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/TFS06
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Blogical.Shared.Adapters.Common\\Blogical.Shared.Adapters.Common.csproj
 		SccProjectName1 = Blogical.Shared.Adapters.Common
@@ -179,7 +179,6 @@ Global
 		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.Release|Any CPU.ActiveCfg = Release
 		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.Release|Any CPU.Build.0 = Release
 		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.Release|Mixed Platforms.ActiveCfg = Release
-		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.Release|Mixed Platforms.Build.0 = Release
 		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.TEST|Any CPU.ActiveCfg = TEST
 		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.TEST|Any CPU.Build.0 = TEST
 		{321D3F3C-B79C-4F84-8B42-E264E370D95F}.TEST|Mixed Platforms.ActiveCfg = TEST
