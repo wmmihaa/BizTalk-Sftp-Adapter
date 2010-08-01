@@ -48,6 +48,9 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         /// <history>2008-11-23 - Johan Hedberg, Added passphrase</history>
         public Sftp(string host, string user, string password, string identityFile, int port, string passphrase, bool debugTrace)
         {
+            if (string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(identityFile))
+                password = null;
+
             this._applicationStorage = ApplicationStorageHelper.Load();
             this._sftp = new SshTransfer(host, user, password);
             this._identityFile = identityFile;
