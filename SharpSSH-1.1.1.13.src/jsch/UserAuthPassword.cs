@@ -118,22 +118,30 @@ class UserAuthPassword : UserAuth{
 	  }
 	  goto loop;
 	}
-	if(buf.buffer[5]==Session.SSH_MSG_USERAUTH_FAILURE){
-	  buf.getInt(); buf.getByte(); buf.getByte(); 
-	  byte[] foo=buf.getString();
-	  int partial_success=buf.getByte();
-	  //System.out.println(new String(foo)+
-	  //		 " partial_success:"+(partial_success!=0));
-	  if(partial_success!=0){
-	    throw new JSchPartialAuthException(Util.getString(foo));
-	  }
-	  break;
-	}
-	else{
-//        System.out.println("USERAUTH fail ("+buf.buffer[5]+")");
-//	  throw new JSchException("USERAUTH fail ("+buf.buffer[5]+")");
-	  return false;
-	}
+    //Added by wmmihaa - Disabling partial success
+    if (buf.buffer[5] == Session.SSH_MSG_USERAUTH_FAILURE)
+    {
+        string msg = string.Format("USERAUTH fail ({0}). Unable to connect to the host using the [{1}] user.", buf.buffer[5], username);
+        throw new JSchPartialAuthException(msg);
+        
+    }
+    //if(buf.buffer[5]==Session.SSH_MSG_USERAUTH_FAILURE){
+    //  buf.getInt(); buf.getByte(); buf.getByte(); 
+    //  byte[] foo=buf.getString();
+    //  int partial_success=buf.getByte();
+    //  //System.out.println(new String(foo)+
+    //  //		 " partial_success:"+(partial_success!=0));
+    //  if(partial_success!=0){
+    //    throw new JSchPartialAuthException(Util.getString(foo));
+    //  }
+    //  break;
+    //}
+    else
+    {
+        //        System.out.println("USERAUTH fail ("+buf.buffer[5]+")");
+        //	  throw new JSchException("USERAUTH fail ("+buf.buffer[5]+")");
+        return false;
+    }
       }
       password=null;
     }

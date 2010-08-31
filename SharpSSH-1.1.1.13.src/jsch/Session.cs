@@ -399,10 +399,11 @@ namespace Tamir.SharpSsh.jsch
 							}
 							catch(JSchPartialAuthException ee)
 							{
-								methods=ee.getMethods();
-								//System.Console.WriteLine("PartialAuth: "+methods);
-								auth_cancel=false;
-								continue;//loop;
+                                throw ee;
+                                //methods=ee.getMethods();
+                                ////System.Console.WriteLine("PartialAuth: "+methods);
+                                //auth_cancel=false;
+                                //continue;//loop;
 							}
 							catch(RuntimeException ee)
 							{
