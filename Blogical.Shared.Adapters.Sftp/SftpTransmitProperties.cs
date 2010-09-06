@@ -364,16 +364,18 @@ namespace Blogical.Shared.Adapters.Sftp
             if (uri.IndexOf("%DateTime%") > -1)
             {
                 string dateTime = DateTime.Now.ToString();
-
+                dateTime = dateTime.Replace("/", "-");
+                dateTime = dateTime.Replace(":", "");
                 uri = uri.Replace("%DateTime%", dateTime);
-                uri = uri.Replace("/", "-");
+                //uri = uri.Replace("/", "-");
             }
             if (uri.IndexOf("%UniversalDateTime%") > -1)
             {
                 string dateTime = DateTime.Now.ToUniversalTime().ToString();
-
+                dateTime = dateTime.Replace("/", "-");
+                dateTime = dateTime.Replace(":", "");
                 uri = uri.Replace("%UniversalDateTime%", dateTime);
-                uri = uri.Replace("/", "-");
+                //uri = uri.Replace("/", "-");
             }
 
             return uri;

@@ -291,7 +291,11 @@ namespace Blogical.Shared.Adapters.Sftp
                                 {
                                     if (batchMessage.AfterGetAction == SftpReceiveProperties.AfterGetActions.Delete)
                                         this._sftp.Delete(fileName);
-                                    else // rename
+                                    // Greg Killins 2010/06/07 - originally the following line was simply an "else" and
+                                    // and assumed the AfterGetAction would be "Rename".
+                                    // I added the explicit check to see if it is "Rename" because now there is the
+                                    // the third valid option of "DoNothing" as the AfterGetAction.
+                                    else if (batchMessage.AfterGetAction == SftpReceiveProperties.AfterGetActions.Rename)
                                     {
                                         string renameFileName = CommonFunctions.CombinePath(Path.GetDirectoryName(fileName), batchMessage.AfterGetFilename);
                                         renameFileName = renameFileName.Replace("%SourceFileName%", Path.GetFileName(fileName));
@@ -299,16 +303,16 @@ namespace Blogical.Shared.Adapters.Sftp
                                         if (renameFileName.IndexOf("%DateTime%") > -1)
                                         {
                                             string dateTime = DateTime.Now.ToString();
-
+                                            dateTime = dateTime.Replace("/", "-");
+                                            dateTime = dateTime.Replace(":", "");
                                             renameFileName = renameFileName.Replace("%DateTime%", dateTime);
-                                            renameFileName = renameFileName.Replace("/", "-");
                                         }
                                         if (renameFileName.IndexOf("%UniversalDateTime%") > -1)
                                         {
                                             string dateTime = DateTime.Now.ToUniversalTime().ToString();
-
-                                            renameFileName = renameFileName.Replace("%UniversalDateTime%", dateTime);
-                                            renameFileName = renameFileName.Replace("/", "-");
+                                            dateTime = dateTime.Replace("/", "-");
+                                            dateTime = dateTime.Replace(":", "");
+                                            renameFileName = renameFileName.Replace("%UniversalDateTime%", dateTime);   
                                         }
 
                                         this._sftp.Rename(fileName, renameFileName);
