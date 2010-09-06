@@ -164,11 +164,14 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             get { return this._useLoadBalancing; }
         }
-	
+
+        // Greg Killins 2010/06/07 - added the third valid option of "DoNothing" 
+        // as the AfterGetActions.       
         public enum AfterGetActions
         {
             Delete = 1,
-            Rename = 2
+            Rename = 2,
+            DoNothing = 3
         }
 
         private AfterGetActions _afterGet = AfterGetActions.Delete;
@@ -267,16 +270,31 @@ namespace Blogical.Shared.Adapters.Sftp
                     break;
             }
 
-            string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", AfterGetActions.Delete.ToString());
-            if (afterget.ToLower() == AfterGetActions.Rename.ToString().ToLower())
+            //string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", AfterGetActions.Delete.ToString());
+            //if (afterget.ToLower() == AfterGetActions.Rename.ToString().ToLower())
+            //    this._afterGet = AfterGetActions.Rename;
+            //else
+            //    this._afterGet = AfterGetActions.Delete;
+            //this._afterGetFilename = IfExistsExtract(endpointConfig, "/Config/aftergetfilename", string.Empty);
+
+            //this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
+
+            // Greg Killins 2010/06/07 - Pass default value of empty string instead of "Delete" when
+            // extracting AfterGetActions value, since empty string is now a valid value which
+            // represents "DoNothing".
+            // If the extracted value is empty string, then explicitly assign "DoNothing" to
+            // the AfterGetActions.
+            //string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", AfterGetActions.Delete.ToString());
+            string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", string.Empty);
+            if (afterget.Trim() == String.Empty)
+                this._afterGet = AfterGetActions.DoNothing;
+            else if (afterget.ToLower() == AfterGetActions.Rename.ToString().ToLower())
                 this._afterGet = AfterGetActions.Rename;
             else
                 this._afterGet = AfterGetActions.Delete;
             this._afterGetFilename = IfExistsExtract(endpointConfig, "/Config/aftergetfilename", string.Empty);
 
             this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
-
-            
         }
         /// <summary>
         /// Read the Blogical.Shared.Adapters.Sftp.Management.ReceiveLocation.xsd and populate 
@@ -343,14 +361,32 @@ namespace Blogical.Shared.Adapters.Sftp
                     break;
             }
 
-            string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", AfterGetActions.Delete.ToString());
-            if (afterget.ToLower() == AfterGetActions.Rename.ToString().ToLower())
+            //string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", AfterGetActions.Delete.ToString());
+            //if (afterget.ToLower() == AfterGetActions.Rename.ToString().ToLower())
+            //    this._afterGet = AfterGetActions.Rename;
+            //else
+            //    this._afterGet = AfterGetActions.Delete;
+            //this._afterGetFilename = IfExistsExtract(endpointConfig, "/Config/aftergetfilename", string.Empty);
+
+            //this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
+
+            // Greg Killins 2010/06/07 - Pass default value of empty string instead of "Delete" when
+            // extracting AfterGetActions value, since empty string is now a valid value which
+            // represents "DoNothing".
+            // If the extracted value is empty string, then explicitly assign "DoNothing" to
+            // the AfterGetActions.
+            //string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", AfterGetActions.Delete.ToString());
+            string afterget = IfExistsExtract(endpointConfig, "/Config/aftergetaction", string.Empty);
+            if (afterget.Trim() == String.Empty)
+                this._afterGet = AfterGetActions.DoNothing;
+            else if (afterget.ToLower() == AfterGetActions.Rename.ToString().ToLower())
                 this._afterGet = AfterGetActions.Rename;
             else
                 this._afterGet = AfterGetActions.Delete;
             this._afterGetFilename = IfExistsExtract(endpointConfig, "/Config/aftergetfilename", string.Empty);
 
             this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
+
         }
         /// <summary>
         /// Read the Blogical.Shared.Adapters.Sftp.Management.ReceiveHandler.xsd and populate 
