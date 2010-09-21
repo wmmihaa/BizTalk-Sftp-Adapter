@@ -43,6 +43,12 @@ namespace Blogical.Shared.Adapters.Sftp
 
         Schedule _schedule;
 
+        // Proxy settings
+        string _proxyHost           = String.Empty;
+        int _proxyPort              = 80;
+        string _proxyUsername       = String.Empty;
+        string _proxyPassword       = String.Empty;
+
         #endregion
         #region Public Members
         /// <summary>
@@ -163,6 +169,36 @@ namespace Blogical.Shared.Adapters.Sftp
         public bool UseLoadBalancing
         {
             get { return this._useLoadBalancing; }
+        }
+
+        // Proxy Settings
+        /// <summary>
+        /// The URI to the HTTP Proxy server
+        /// </summary>
+        public string ProxyHost
+        {
+            get { return this._proxyHost; }
+        }
+        /// <summary>
+        /// The port on which the HTTP proxy is running on; by default 80.
+        /// </summary>
+        public int ProxyPort
+        {
+            get { return this._proxyPort; }
+        }
+        /// <summary>
+        /// The username used for proxy authentication.
+        /// </summary>
+        public string ProxyUserName
+        {
+            get { return this._proxyUsername; }
+        }
+        /// <summary>
+        /// The password used for proxy authentication.
+        /// </summary>
+        public string ProxyPassword
+        {
+            get { return this._proxyPassword; }
         }
 
         // Greg Killins 2010/06/07 - added the third valid option of "DoNothing" 
@@ -295,6 +331,13 @@ namespace Blogical.Shared.Adapters.Sftp
             this._afterGetFilename = IfExistsExtract(endpointConfig, "/Config/aftergetfilename", string.Empty);
 
             this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
+
+            // Proxy Settings
+            this._proxyHost = IfExistsExtract(endpointConfig, "/Config/proxyserver", String.Empty);
+            this._proxyPort = ExtractInt(endpointConfig, "/Config/proxyport"); 
+            this._proxyUsername = IfExistsExtract(endpointConfig, "/Config/proxyusername", String.Empty);
+            this._proxyPassword = IfExistsExtract(endpointConfig, "/Config/proxypassword", String.Empty);
+
         }
         /// <summary>
         /// Read the Blogical.Shared.Adapters.Sftp.Management.ReceiveLocation.xsd and populate 
@@ -387,6 +430,11 @@ namespace Blogical.Shared.Adapters.Sftp
 
             this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", string.Empty);
 
+            // Proxy Settings
+            this._proxyHost = IfExistsExtract(endpointConfig, "/Config/proxyserver", String.Empty);
+            this._proxyPort = ExtractInt(endpointConfig, "/Config/proxyport");
+            this._proxyUsername = IfExistsExtract(endpointConfig, "/Config/proxyusername", String.Empty);
+            this._proxyPassword = IfExistsExtract(endpointConfig, "/Config/proxypassword", String.Empty);
         }
         /// <summary>
         /// Read the Blogical.Shared.Adapters.Sftp.Management.ReceiveHandler.xsd and populate 

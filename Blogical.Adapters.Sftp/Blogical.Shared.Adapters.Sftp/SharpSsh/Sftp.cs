@@ -31,6 +31,13 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
         string _password = String.Empty;
         int _port = 22;
         string _passphrase = String.Empty;
+
+        // Proxy Settings
+        string _proxyHost = string.Empty;
+        int _proxyPort = 80;
+        string _proxyUserName = string.Empty;
+        string _proxyPassword = string.Empty;
+
         #endregion
         #region ISftp Members
         public bool DebugTrace { get; set; }
@@ -60,6 +67,35 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
             this._port = port;
             this._passphrase = passphrase;
             this.DebugTrace = debugTrace;
+        }
+        public Sftp(string host, 
+            string user, 
+            string password, 
+            string identityFile, 
+            int port, 
+            string passphrase, 
+            bool debugTrace,
+            string proxyHost,
+            int proxyPort,
+            string proxyUserName,
+            string proxyPassword)
+        {
+            if (string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(identityFile))
+                password = null;
+
+            this._applicationStorage = ApplicationStorageHelper.Load();
+            this._sftp = new SshTransfer(host, user, password);
+            this._identityFile = identityFile;
+            this._host = host;
+            this._user = user;
+            this._password = password;
+            this._port = port;
+            this._passphrase = passphrase;
+            this.DebugTrace = debugTrace;
+            this._proxyHost = proxyHost;
+            this._proxyPort = proxyPort;
+            this._proxyUserName = proxyUserName;
+            this._proxyPassword = proxyPassword;
         }
         /// <summary>
         /// Used for receiving files
@@ -378,10 +414,17 @@ namespace Blogical.Shared.Adapters.Sftp.SharpSsh
                     else if (!String.IsNullOrEmpty(_identityFile))
                         _sftp.AddIdentityFile(_identityFile);
 
-                    this._sftp.Connect(this._port);
+                    if (!String.IsNullOrEmpty(this._proxyHost))
+                    {
+                        this._sftp.ConnectThroughProxy(this._port, this._proxyHost, this._proxyPort, this._proxyUserName, this._proxyPassword);
+                    }
+                    else
+                    {
+                        this._sftp.Connect(this._port);
 
-                    //Make sure HostKey match previously retrieved HostKey.
-                    CheckHostKey();
+                        //Make sure HostKey match previously retrieved HostKey.
+                        CheckHostKey();
+                    }
 
                     this._connectedSince = DateTime.Now;
                 }

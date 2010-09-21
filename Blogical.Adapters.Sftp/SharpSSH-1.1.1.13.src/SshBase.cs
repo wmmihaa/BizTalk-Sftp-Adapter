@@ -113,10 +113,37 @@ namespace Tamir.SharpSsh
 			this.ConnectSession(tcpPort);
 			this.ConnectChannel();	
 		}
+        /// <summary>
+        /// Connect to remote HTTP Proxy
+        /// </summary>
+        /// <param name="tcpPort">The destination TCP port for this connection</param>
+        public virtual void ConnectThroughProxy(int sshPort, string proxyhost, int port, string userName, string password)
+        {
+
+            this.ConnectSessionThroughProxy(sshPort, proxyhost, port, userName, password);
+            this.ConnectChannel();
+        }
+
+        protected virtual void ConnectSessionThroughProxy(int sshPort, string proxyhost, int port, string userName, string password)
+        {
+            ProxyHTTP proxy = new ProxyHTTP(proxyhost, port);
+            proxy.setUserPasswd(userName, password);
+
+            m_jsch.setProxy(m_host, proxy);
+            
+            m_session = m_jsch.getSession(m_user, m_host, sshPort);
+            if (Password != null)
+                m_session.setUserInfo(new KeyboardInteractiveUserInfo(Password));
+
+            Hashtable config = new Hashtable();
+            config.Add("StrictHostKeyChecking", "no");
+            m_session.setConfig(config);
+            m_session.connect();
+        }
 
 		protected virtual void ConnectSession(int tcpPort)
 		{
-			m_session = m_jsch.getSession(m_user, m_host, tcpPort);
+            m_session = m_jsch.getSession(m_user, m_host, tcpPort);
 			if (Password != null)
 				m_session.setUserInfo(new KeyboardInteractiveUserInfo(Password));
 			Hashtable config = new Hashtable();

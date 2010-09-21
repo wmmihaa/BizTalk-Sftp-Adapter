@@ -293,23 +293,32 @@ namespace Blogical.Shared.Adapters.Sftp
             {
                 TraceMessage("[SftpReceiverEndpoint] PickupFilesAndSubmit called [" + this._properties.Uri + "]");
 
-                // Used for Connection pool: 
-                //sftp = SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace).GetConnection(
-                //    this._properties.SSHUser, 
-                //    this._properties.SSHPasswordProperty, 
-                //    this._properties.SSHIdentityFile,
-                //    this._properties.SSHPort,
-                //    this._shutdownRequested,
-                //    this._properties.SSHPassphrase);
-
-                sftp = new SharpSsh.Sftp(this._properties.SSHHost,
+               
+                if(string.IsNullOrEmpty( this._properties.ProxyHost))
+                {
+                    sftp = new SharpSsh.Sftp(this._properties.SSHHost,
                                         this._properties.SSHUser,
                                         this._properties.SSHPasswordProperty,
                                         this._properties.SSHIdentityFile,
                                         this._properties.SSHPort,
                                         this._properties.SSHPassphrase,
                                         this._properties.DebugTrace);
+                }
+                else
+                {
+                    sftp = new SharpSsh.Sftp(this._properties.SSHHost,
+                                        this._properties.SSHUser,
+                                        this._properties.SSHPasswordProperty,
+                                        this._properties.SSHIdentityFile,
+                                        this._properties.SSHPort,
+                                        this._properties.SSHPassphrase,
+                                        this._properties.DebugTrace,
+                                        this._properties.ProxyHost,
+                                        this._properties.ProxyPort,
+                                        this._properties.ProxyUserName,
+                                        this._properties.ProxyPassword);
 
+                }
 
                 string uri = this._properties.UseLoadBalancing ? this._properties.Uri : null;
 
