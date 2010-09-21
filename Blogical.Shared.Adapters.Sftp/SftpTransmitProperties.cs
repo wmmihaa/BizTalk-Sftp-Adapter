@@ -18,25 +18,32 @@ namespace Blogical.Shared.Adapters.Sftp
     public class SftpTransmitProperties : ConfigProperties
     {
         #region Private Fields
-        private static int _handlerSendBatchSize = 20;
-        private static int _handlerbufferSize = 4096;
-        private static int _handlerthreadsPerCPU = 1;
+        private static int _handlerSendBatchSize    = 20;
+        private static int _handlerbufferSize       = 4096;
+        private static int _handlerthreadsPerCPU    = 1;
 
-        string _sshHost = String.Empty;
-        string _sshPasswordProperty = String.Empty;
-        int _sshPort = 22;
-        string _sshUser = String.Empty;
-        string _sshIdentityFile = String.Empty;
-        string _ssoApplication = String.Empty;
-        bool _sshtrace = false;
+        string _sshHost                             = String.Empty;
+        string _sshPasswordProperty                 = String.Empty;
+        int _sshPort                                = 22;
+        string _sshUser                             = String.Empty;
+        string _sshIdentityFile                     = String.Empty;
+        string _ssoApplication                      = String.Empty;
+        bool _sshtrace                              = false;
 
-        string _sshRemotePath = String.Empty;
-        string _sshRemoteTempDir = String.Empty;
-        string _sshRemoteFile = String.Empty;
-        int _sshErrorThreshold = 10;
-        int _connectionLimit = 10;
-        string _applySecurityPermissions = String.Empty;
-        bool _verifyFileSize = false;
+        string _sshRemotePath                       = String.Empty;
+        string _sshRemoteTempDir                    = String.Empty;
+        string _sshRemoteFile                       = String.Empty;
+        int _sshErrorThreshold                      = 10;
+        int _connectionLimit                        = 10;
+        string _applySecurityPermissions            = String.Empty;
+        bool _verifyFileSize                        = false;
+
+        // Proxy settings
+        string _proxyHost                           = String.Empty;
+        int _proxyPort                              = 80;
+        string _proxyUsername                       = String.Empty;
+        string _proxyPassword                       = String.Empty;
+
         #endregion
         #region Public Properties
         //public static int BufferSize { get { return _handlerbufferSize; } }
@@ -161,6 +168,38 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             get { return _applySecurityPermissions; }
         }
+
+        // Proxy Settings
+        /// <summary>
+        /// The URI to the HTTP Proxy server
+        /// </summary>
+        public string ProxyHost
+        {
+            get { return this._proxyHost; }
+        }
+        /// <summary>
+        /// The port on which the HTTP proxy is running on; by default 80.
+        /// </summary>
+        public int ProxyPort
+        {
+            get { return this._proxyPort; }
+        }
+        /// <summary>
+        /// The username used for proxy authentication.
+        /// </summary>
+        public string ProxyUserName
+        {
+            get { return this._proxyUsername; }
+        }
+        /// <summary>
+        /// The password used for proxy authentication.
+        /// </summary>
+        public string ProxyPassword
+        {
+            get { return this._proxyPassword; }
+        }
+
+
         public bool VerifyFileSize
         {
             get { return _verifyFileSize; }
@@ -261,6 +300,12 @@ namespace Blogical.Shared.Adapters.Sftp
             this._verifyFileSize = IfExistsExtractBool(endpointConfig, "/Config/verifyFileSize", false);
             this._sshRemoteTempFile = IfExistsExtract(endpointConfig, "/Config/remotetempfile", String.Empty);
             this._sshPassphrase = IfExistsExtract(endpointConfig, "/Config/passphrase", String.Empty);
+
+            // Proxy Settings
+            this._proxyHost = IfExistsExtract(endpointConfig, "/Config/proxyserver", String.Empty);
+            this._proxyPort = ExtractInt(endpointConfig, "/Config/proxyport");
+            this._proxyUsername = IfExistsExtract(endpointConfig, "/Config/proxyusername", String.Empty);
+            this._proxyPassword = IfExistsExtract(endpointConfig, "/Config/proxypassword", String.Empty);
         }
 
         /// <summary>
@@ -311,6 +356,12 @@ namespace Blogical.Shared.Adapters.Sftp
             this._verifyFileSize = (bool)Extract(context, "verifyFileSize", propertyNS, false, false);
             this._sshRemoteTempFile = (string)Extract(context, "remotetempfile", propertyNS, String.Empty, false);
             this._sshPassphrase = (string)Extract(context, "passphrase", propertyNS, string.Empty, false);
+
+            // Proxy Settings
+            this._proxyHost = (string)Extract(context, "proxyserver", propertyNS, string.Empty, false);
+            this._proxyPort = (int)Extract(context, "proxyport", propertyNS,80, false);
+            this._proxyUsername = (string)Extract(context, "proxyusername", propertyNS, string.Empty, false);
+            this._proxyPassword = (string)Extract(context, "proxypassword", propertyNS, string.Empty, false); 
         }
 
         /// <summary>

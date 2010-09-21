@@ -63,7 +63,7 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             
             this._properties = new SftpTransmitProperties(message, _propertyNamespace);
-            ISftp sftp = SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace, this._properties.ConnectionLimit).GetConnection(this._properties.SSHUser, this._properties.SSHPasswordProperty, this._properties.SSHIdentityFile, this._properties.SSHPort, this._shutdownRequested, this._properties.SSHPassphrase);
+            ISftp sftp = SftpConnectionPool.GetHostByName(this._properties).GetConnection(this._properties,this._shutdownRequested);
 
             try
             {
@@ -80,14 +80,14 @@ namespace Blogical.Shared.Adapters.Sftp
             }
             finally
             {
-                SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace, this._properties.ConnectionLimit).ReleaseConnection(sftp);
+                SftpConnectionPool.GetHostByName(this._properties).ReleaseConnection(sftp);
             }
             return null;
         }
 
         void sftp_OnDisconnect(ISftp sftp)
         {
-            SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace, this._properties.ConnectionLimit).ReleaseConnection(sftp);
+            SftpConnectionPool.GetHostByName(this._properties).ReleaseConnection(sftp);
         }
         /// <summary>
         /// Executed on termination (Stop Host instance)

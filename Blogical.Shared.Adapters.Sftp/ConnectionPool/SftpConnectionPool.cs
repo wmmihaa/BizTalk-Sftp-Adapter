@@ -72,25 +72,25 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
         /// </summary>
         /// <param name="hostName"></param>
         /// <returns></returns>
-        public static SftpHost GetHostByName(string hostName, bool trace, int connectionLimit)
+        public static SftpHost GetHostByName(SftpTransmitProperties properties)//string hostName, bool trace, int connectionLimit)
         {
             lock (_hosts.SyncRoot)
             {
                 foreach (SftpHost host in _hosts)
                 {
-                    if (host.HostName == hostName)
+                    if (host.HostName == properties.SSHHost)
                     {
-                        if (host.ConnectionLimit != connectionLimit)
+                        if (host.ConnectionLimit != properties.ConnectionLimit)
                         {
-                            host.ConnectionLimit = connectionLimit;
-                            if (trace)
-                                Trace.WriteLineIf(trace, "[SftpConnectionPool] Overriding connection pool settings");
+                            host.ConnectionLimit = properties.ConnectionLimit;
+                            
+                            Trace.WriteLineIf(properties.DebugTrace, "[SftpConnectionPool] Overriding connection pool settings");
                         }
                         return host;
                     }
                 }
 
-                SftpHost newHost = new SftpHost(hostName, DefaultConnectionLimit, trace);
+                SftpHost newHost = new SftpHost(properties.SSHHost, properties.ConnectionLimit, properties.DebugTrace);
                 _hosts.Add(newHost);
 
                 return newHost;
@@ -166,14 +166,41 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
         /// <param name="identityFile"></param>
         /// <param name="shutdownRequested"></param>
         /// <returns></returns>
-        public ISftp GetConnection(string username, string password, string identityFile, int port, bool shutdownRequested, string passphrase)
+        public ISftp GetConnection(SftpTransmitProperties properties, bool shutdownRequested)//.SSHHoststring username, string password, string identityFile, int port, bool shutdownRequested, string passphrase)
         {
             while (!shutdownRequested)
             {
                 if (this.ConnectionLimit == 0)
                 {
                     TraceMessage("[SftpConnectionPool] GetConnectionFromPool creating a new connection (not from pool)");
-                    ISftp sftp = new SharpSsh.Sftp(this.HostName, username, password, identityFile, port, passphrase, this._trace);
+                    //ISftp sftp = new Sftp(this.HostName, username, password, identityFile, port, passphrase, this._trace);
+                    ISftp sftp = null;
+                    if (string.IsNullOrEmpty(properties.ProxyHost))
+                    {
+                        sftp = new SharpSsh.Sftp(properties.SSHHost,
+                            properties.SSHUser,
+                            properties.SSHPasswordProperty,
+                            properties.SSHIdentityFile,
+                            properties.SSHPort,
+                            properties.SSHPassphrase,
+                            properties.DebugTrace);
+                        
+                    }
+                    else
+                    {
+                        sftp = new SharpSsh.Sftp(properties.SSHHost,
+                            properties.SSHUser,
+                            properties.SSHPasswordProperty,
+                            properties.SSHIdentityFile,
+                            properties.SSHPort,
+                            properties.SSHPassphrase,
+                            properties.DebugTrace,
+                            properties.ProxyHost,
+                            properties.ProxyPort,
+                            properties.ProxyUserName,
+                            properties.ProxyPassword);
+                    }
+
                     return sftp;
                 }
                 lock (this.Connections)
@@ -188,7 +215,35 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                     if (this._currentCount < this.ConnectionLimit)
                     {
                         TraceMessage("[SftpConnectionPool] GetConnectionFromPool creating a new connection for pool");
-                        ISftp sftp = new SharpSsh.Sftp(this.HostName, username, password, identityFile, port, passphrase, this._trace);
+                        //ISftp sftp = new SharpSsh.Sftp(this.HostName, username, password, identityFile, port, passphrase, this._trace);
+
+                        ISftp sftp = null;
+                        if (string.IsNullOrEmpty(properties.ProxyHost))
+                        {
+                            sftp = new SharpSsh.Sftp(properties.SSHHost,
+                                properties.SSHUser,
+                                properties.SSHPasswordProperty,
+                                properties.SSHIdentityFile,
+                                properties.SSHPort,
+                                properties.SSHPassphrase,
+                                properties.DebugTrace);
+                            //(this.HostName, username, password, identityFile, port, passphrase, this._trace);
+                        }
+                        else
+                        {
+                            sftp = new SharpSsh.Sftp(properties.SSHHost,
+                                properties.SSHUser,
+                                properties.SSHPasswordProperty,
+                                properties.SSHIdentityFile,
+                                properties.SSHPort,
+                                properties.SSHPassphrase,
+                                properties.DebugTrace,
+                                properties.ProxyHost,
+                                properties.ProxyPort,
+                                properties.ProxyUserName,
+                                properties.ProxyPassword);
+                        }
+
                         this._currentCount++;
                         return sftp;
                     }

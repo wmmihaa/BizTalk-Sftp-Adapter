@@ -182,7 +182,7 @@ namespace Tamir.SharpSsh.jsch
 		internal String getConfig(String foo){ return (String)(config[foo]); }
 
 		private System.Collections.ArrayList proxies;
-		void setProxy(String hosts, Proxy proxy)
+		internal void setProxy(String hosts, Proxy proxy)
 		{
 			String[] patterns=Util.split(hosts, ",");
 			if(proxies==null){proxies=new System.Collections.ArrayList();}
