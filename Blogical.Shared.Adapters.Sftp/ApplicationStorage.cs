@@ -122,20 +122,24 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             // Open the stream from the IsolatedStorage.
             IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null);
-            Stream stream = new IsolatedStorageFileStream(settingsFileName, FileMode.Create, isoStore);
 
-            if (stream != null)
+            // Greg Sharp: Provide thread-safety around write access to the config file
+            lock (objlock)
             {
-                try
+                Stream stream = new IsolatedStorageFileStream(settingsFileName, FileMode.Create, isoStore);
+                if (stream != null)
                 {
-                    XmlSerializer ser = new XmlSerializer(typeof(ApplicationStorage[]));
-                    TextWriter writer = new StreamWriter(stream);
-                    ser.Serialize(writer, (ApplicationStorage[])applicationStorage.ToArray(typeof(ApplicationStorage)));
-                    writer.Close();
-                }
-                finally
-                {
-                    stream.Close();
+                    try
+                    {
+                        XmlSerializer ser = new XmlSerializer(typeof(ApplicationStorage[]));
+                        TextWriter writer = new StreamWriter(stream);
+                        ser.Serialize(writer, (ApplicationStorage[])applicationStorage.ToArray(typeof(ApplicationStorage)));
+                        writer.Close();
+                    }
+                    finally
+                    {
+                        stream.Close();
+                    }
                 }
             }
         }

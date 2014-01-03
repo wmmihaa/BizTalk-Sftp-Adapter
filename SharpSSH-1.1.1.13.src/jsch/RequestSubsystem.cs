@@ -66,10 +66,13 @@ namespace Tamir.SharpSsh.jsch
 			{
 				while(channel.reply==-1)
 				{
-					try{Thread.sleep(10);}
-					catch//(System.Exception ee)
-					{
-					}
+                    try
+                    {
+                        Thread.sleep(10);
+                    }
+                    catch
+                    {
+                    }
 				}
 				if(channel.reply==0)
 				{

@@ -123,6 +123,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
     /// <summary>
     /// 
     /// </summary>
+    /// <history>2013-11-10 Greg Sharp, Add X.509 identity certificate support</history>
     [Serializable]
     public class SftpHost
     {
@@ -181,6 +182,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                             properties.SSHUser,
                             properties.SSHPasswordProperty,
                             properties.SSHIdentityFile,
+                            properties.SSHIdentityThumbprint,
                             properties.SSHPort,
                             properties.SSHPassphrase,
                             properties.DebugTrace);
@@ -192,6 +194,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                             properties.SSHUser,
                             properties.SSHPasswordProperty,
                             properties.SSHIdentityFile,
+                            properties.SSHIdentityThumbprint,
                             properties.SSHPort,
                             properties.SSHPassphrase,
                             properties.DebugTrace,
@@ -224,6 +227,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                                 properties.SSHUser,
                                 properties.SSHPasswordProperty,
                                 properties.SSHIdentityFile,
+                                properties.SSHIdentityThumbprint,
                                 properties.SSHPort,
                                 properties.SSHPassphrase,
                                 properties.DebugTrace);
@@ -235,6 +239,7 @@ namespace Blogical.Shared.Adapters.Sftp.ConnectionPool
                                 properties.SSHUser,
                                 properties.SSHPasswordProperty,
                                 properties.SSHIdentityFile,
+                                properties.SSHIdentityThumbprint,
                                 properties.SSHPort,
                                 properties.SSHPassphrase,
                                 properties.DebugTrace,

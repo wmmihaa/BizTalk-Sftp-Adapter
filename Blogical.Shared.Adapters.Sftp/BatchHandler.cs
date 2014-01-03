@@ -169,9 +169,10 @@ namespace Blogical.Shared.Adapters.Sftp
                 // Add the file to the batch
                 this.Files.Add(new BatchMessage(message, fileName, BatchOperationType.Submit, afterGetAction, afterGetFilename));
 
+                // Greg Sharp: Let the caller set this as the file size may be stale
                 // Add the size of the file to the stream
-                if (message.BodyPart.Data.CanWrite)
-                    message.BodyPart.Data.SetLength(size);
+                //if (message.BodyPart.Data.CanWrite)
+                //    message.BodyPart.Data.SetLength(size);
 
                 return message;
             }

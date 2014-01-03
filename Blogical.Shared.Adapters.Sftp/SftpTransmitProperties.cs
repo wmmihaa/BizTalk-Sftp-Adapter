@@ -15,6 +15,7 @@ namespace Blogical.Shared.Adapters.Sftp
     /// The SftpTransmitProperties class represents the properties defined in
     /// Blogical.Shared.Adapters.Sftp.Management.TransmitLocation.xsd
     /// </summary>
+    /// <history>2013-11-10 Greg Sharp, Add X.509 identity certificate support</history>
     public class SftpTransmitProperties : ConfigProperties
     {
         #region Private Fields
@@ -27,6 +28,7 @@ namespace Blogical.Shared.Adapters.Sftp
         int _sshPort                                = 22;
         string _sshUser                             = String.Empty;
         string _sshIdentityFile                     = String.Empty;
+        string _sshIdentityThumbprint               = String.Empty;
         string _ssoApplication                      = String.Empty;
         bool _sshtrace                              = false;
 
@@ -82,11 +84,18 @@ namespace Blogical.Shared.Adapters.Sftp
             get { return this._sshUser; }
         }
         /// <summary>
-        /// The certificate to use fr client authentication during the SSH handshake.
+        /// The certificate to use for client authentication during the SSH handshake.
         /// </summary>
         public string SSHIdentityFile
         {
             get { return this._sshIdentityFile; }
+        }
+        /// <summary>
+        /// The certificate to use for client authentication during the SSH handshake.
+        /// </summary>
+        public string SSHIdentityThumbprint
+        {
+            get { return this._sshIdentityThumbprint; }
         }
         /// <summary>
         /// The Single Sign On (SSO) Affiliate Application
@@ -290,6 +299,7 @@ namespace Blogical.Shared.Adapters.Sftp
             this._sshHost = Extract(endpointConfig, "/Config/host", String.Empty);
             this._sshPort = ExtractInt(endpointConfig, "/Config/port");
             this._sshIdentityFile = IfExistsExtract(endpointConfig, "/Config/identityfile", String.Empty);
+            this._sshIdentityThumbprint = IfExistsExtract(endpointConfig, "/Config/identitythumbprint", String.Empty);
 
             this._sshRemotePath = Extract(endpointConfig, "/Config/remotepath", String.Empty);
             this._sshRemoteTempDir = IfNotEmptyExtract(endpointConfig, "/Config/remotetempdir", false, String.Empty);
@@ -348,6 +358,7 @@ namespace Blogical.Shared.Adapters.Sftp
             this._sshHost = (string)Extract(context, "host", propertyNS, String.Empty, true);
             this._sshPort = (int)Extract(context, "portno", propertyNS, 22, true);
             this._sshIdentityFile = (string)Extract(context, "identityfile", propertyNS, String.Empty, false);
+            this._sshIdentityThumbprint = (string)Extract(context, "identitythumbprint", propertyNS, String.Empty, false);
             this._sshRemotePath = (string)Extract(context, "remotepath", propertyNS, String.Empty, false);
             this._sshRemoteTempDir = (string)Extract(context, "remotetempdir", propertyNS, String.Empty, false);
             this._sshRemoteFile = (string)Extract(context, "remotefile", propertyNS, String.Empty, true);

@@ -4,6 +4,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 	ProjectSection(SolutionItems) = preProject
 		Blogical.Shared.Adapters.Sftp_v1.3.doc = Blogical.Shared.Adapters.Sftp_v1.3.doc
 		Blogical.Shared.Adapters.Sftp_v1.4.doc = Blogical.Shared.Adapters.Sftp_v1.4.doc
+		Blogical.Shared.Adapters.Sftp_v1.5.doc = Blogical.Shared.Adapters.Sftp_v1.5.doc
 		CreateTable.sql = CreateTable.sql
 	EndProjectSection
 EndProject
@@ -25,30 +26,6 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Blogical.Shared.Adapters.Sftp.Setup", "Blogical.Shared.Adapters.Sftp.Setup\Blogical.Shared.Adapters.Sftp.Setup.vdproj", "{321D3F3C-B79C-4F84-8B42-E264E370D95F}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/TFS06
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Blogical.Shared.Adapters.Common\\Blogical.Shared.Adapters.Common.csproj
-		SccProjectName1 = Blogical.Shared.Adapters.Common
-		SccLocalPath1 = Blogical.Shared.Adapters.Common
-		SccProjectUniqueName2 = Blogical.Shared.Adapters.Sftp.Management\\Blogical.Shared.Adapters.Sftp.Management.csproj
-		SccProjectName2 = Blogical.Shared.Adapters.Sftp.Management
-		SccLocalPath2 = Blogical.Shared.Adapters.Sftp.Management
-		SccProjectUniqueName3 = Blogical.Shared.Adapters.Sftp.Schemas\\Blogical.Shared.Adapters.Sftp.Schemas.btproj
-		SccProjectName3 = Blogical.Shared.Adapters.Sftp.Schemas
-		SccLocalPath3 = Blogical.Shared.Adapters.Sftp.Schemas
-		SccProjectUniqueName4 = Blogical.Shared.Adapters.Sftp\\Blogical.Shared.Adapters.Sftp.csproj
-		SccProjectName4 = Blogical.Shared.Adapters.Sftp
-		SccLocalPath4 = Blogical.Shared.Adapters.Sftp
-		SccProjectUniqueName5 = SharpSSH-1.1.1.13.src\\SharpSSH.csproj
-		SccProjectName5 = SharpSSH-1.1.1.13.src
-		SccLocalPath5 = SharpSSH-1.1.1.13.src
-		SccProjectUniqueName6 = Blogical.Shared.Adapters.Sftp.Setup\\Blogical.Shared.Adapters.Sftp.Setup.vdproj
-		SccProjectName6 = Blogical.Shared.Adapters.Sftp.Setup
-		SccLocalPath6 = Blogical.Shared.Adapters.Sftp.Setup
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -187,5 +164,29 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/TFS06
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Blogical.Shared.Adapters.Common\\Blogical.Shared.Adapters.Common.csproj
+		SccProjectName1 = Blogical.Shared.Adapters.Common
+		SccLocalPath1 = Blogical.Shared.Adapters.Common
+		SccProjectUniqueName2 = Blogical.Shared.Adapters.Sftp.Management\\Blogical.Shared.Adapters.Sftp.Management.csproj
+		SccProjectName2 = Blogical.Shared.Adapters.Sftp.Management
+		SccLocalPath2 = Blogical.Shared.Adapters.Sftp.Management
+		SccProjectUniqueName3 = Blogical.Shared.Adapters.Sftp.Schemas\\Blogical.Shared.Adapters.Sftp.Schemas.btproj
+		SccProjectName3 = Blogical.Shared.Adapters.Sftp.Schemas
+		SccLocalPath3 = Blogical.Shared.Adapters.Sftp.Schemas
+		SccProjectUniqueName4 = Blogical.Shared.Adapters.Sftp\\Blogical.Shared.Adapters.Sftp.csproj
+		SccProjectName4 = Blogical.Shared.Adapters.Sftp
+		SccLocalPath4 = Blogical.Shared.Adapters.Sftp
+		SccProjectUniqueName5 = SharpSSH-1.1.1.13.src\\SharpSSH.csproj
+		SccProjectName5 = SharpSSH-1.1.1.13.src
+		SccLocalPath5 = SharpSSH-1.1.1.13.src
+		SccProjectUniqueName6 = Blogical.Shared.Adapters.Sftp.Setup\\Blogical.Shared.Adapters.Sftp.Setup.vdproj
+		SccProjectName6 = Blogical.Shared.Adapters.Sftp.Setup
+		SccLocalPath6 = Blogical.Shared.Adapters.Sftp.Setup
 	EndGlobalSection
 EndGlobal

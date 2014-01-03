@@ -56,10 +56,13 @@ namespace Tamir.SharpSsh.jsch
 			{
 				while(channel.reply==-1)
 				{
-					try{System.Threading.Thread.Sleep(10);}
-					catch//(Exception ee)
-					{
-					}
+                    try
+                    {
+                        System.Threading.Thread.Sleep(10);
+                    }
+                    catch
+                    {
+                    }
 				}
 				if(channel.reply==0)
 				{

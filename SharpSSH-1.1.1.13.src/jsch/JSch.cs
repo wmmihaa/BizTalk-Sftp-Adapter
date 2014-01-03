@@ -31,7 +31,10 @@ namespace Tamir.SharpSsh.jsch
 	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	*/
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <history>2013-11-10 Greg Sharp, Add X.509 identity certificate support</history>
 	public class JSch
 	{
 
@@ -179,6 +182,11 @@ namespace Tamir.SharpSsh.jsch
 			if(bar!=null) identity.setPassphrase(bar);
 			identities.Add(identity);
 		}
+        public void addIdentityCert(string foo)
+        {
+            Identity identity = new IdentityCert(foo, this);
+            this.identities.Add(identity);
+        }
 		internal String getConfig(String foo){ return (String)(config[foo]); }
 
 		private System.Collections.ArrayList proxies;

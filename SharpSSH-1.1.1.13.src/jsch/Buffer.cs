@@ -33,7 +33,8 @@ namespace Tamir.SharpSsh.jsch
 
 	public class Buffer
 	{
-		static byte[] tmp=new byte[4];
+        // Greg Sharp: Remove non-thread-safe buffer
+        // static byte[] tmp = new byte[4];
 		internal byte[] buffer;
 		internal int index;
 		internal int s;
@@ -75,6 +76,8 @@ namespace Tamir.SharpSsh.jsch
 		public void putInt(int v) 
 		{
 			uint val = (uint)v;
+            // Greg Sharp: Thread-safe temporary buffer
+            byte[] tmp = new byte[4];
 			tmp[0]=(byte)(val >> 24);
 			tmp[1]=(byte)(val >> 16);
 			tmp[2]=(byte)(val >> 8);
@@ -85,6 +88,8 @@ namespace Tamir.SharpSsh.jsch
 		public void putLong(long v) 
 		{
 			ulong val = (ulong)v;
+            // Greg Sharp: Thread-safe temporary buffer
+            byte[] tmp = new byte[4];
 			tmp[0]=(byte)(val >> 56);
 			tmp[1]=(byte)(val >> 48);
 			tmp[2]=(byte)(val >>40);

@@ -37,6 +37,7 @@ namespace Tamir.SharpSsh
 	/// <summary>
 	/// A wrapper class for JSch's SSH channel
 	/// </summary>
+    /// <history>2013-11-10 Greg Sharp, Add support for X.509 certificates</history>
 	public abstract class SshBase
 	{
 		protected string    m_host;
@@ -93,6 +94,15 @@ namespace Tamir.SharpSsh
 		{
 			m_jsch.addIdentity(privateKeyFile, passphrase);
 		}
+
+        /// <summary>
+        /// Adds identity cert for publickey user authentication
+        /// </summary>
+        /// <param name="privateCertThumbprint">The thumbprint of the private key certificate</param>
+        public virtual void AddIdentityCert(string privateCertThumbprint)
+        {
+            this.m_jsch.addIdentityCert(privateCertThumbprint);
+        }
 
 		protected abstract string ChannelType{get;}
 
