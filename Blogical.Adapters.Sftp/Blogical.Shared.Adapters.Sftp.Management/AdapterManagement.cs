@@ -14,6 +14,7 @@ namespace Blogical.Shared.Adapters.Sftp.Management
     /// <summary>
     /// This class is used for administrating both the Receive and the Send adapter.
     /// </summary>
+    /// <history>2013-11-10 Greg Sharp, Add X.509 identity certificate support</history>
     public class StaticAdapterManagement : IAdapterConfig, IStaticAdapterConfig, IAdapterConfigValidation
     {
         private static ResourceManager resourceManager = new ResourceManager("Blogical.Shared.Adapters.Sftp.Management.SftpResource", Assembly.GetExecutingAssembly());
@@ -181,12 +182,14 @@ namespace Blogical.Shared.Adapters.Sftp.Management
 
             XmlNode nodePassword = GetNode(doc, "password", false);
             XmlNode nodeIdentityFile = GetNode(doc, "identityfile", false);
+            XmlNode nodeIdentityThumbprint = GetNode(doc, "identitythumbprint", false);
             XmlNode nodeSsoApplication = GetNode(doc, "ssoapplication", false);
 
             if (((nodePassword == null) || (nodePassword.InnerText.Length == 0)) &&
                 ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)) &&
+                ((nodeIdentityThumbprint == null) || (nodeIdentityThumbprint.InnerText.Length == 0)) &&
                 ((nodeSsoApplication == null) || (nodeSsoApplication.InnerText.Length == 0)))
-                throw new Exception("You must specify either Password, Identityfile or SSO Application");
+                throw new Exception("You must specify either Password, IdentityFile or IdentityThumbprint or SSO Application");
 
 
             StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
@@ -237,12 +240,14 @@ namespace Blogical.Shared.Adapters.Sftp.Management
             }
             XmlNode nodePassword = GetNode(doc, "password", false);
             XmlNode nodeIdentityFile = GetNode(doc, "identityfile", false);
+            XmlNode nodeIdentityThumbprint = GetNode(doc, "identitythumbprint", false);
             XmlNode nodeSsoApplication = GetNode(doc, "ssoapplication", false);
 
             if (((nodePassword == null) || (nodePassword.InnerText.Length == 0)) &&
                 ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)) &&
+                ((nodeIdentityThumbprint == null) || (nodeIdentityThumbprint.InnerText.Length == 0)) &&
                 ((nodeSsoApplication == null) || (nodeSsoApplication.InnerText.Length == 0)))
-                throw new Exception("You must specify either Password, Identityfile or SSO Application");
+                throw new Exception("You must specify either Password, IdentityFile or IdentityThumbprint or SSO Application");
 
             StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
             if (nodePort.InnerText.Length > 0)

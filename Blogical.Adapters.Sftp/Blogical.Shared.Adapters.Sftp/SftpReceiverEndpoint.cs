@@ -26,6 +26,7 @@ namespace Blogical.Shared.Adapters.Sftp
     /// This class corresponds to a Receive Location/URI.  It handles polling the
     /// given folder for new messages. 
     /// </summary>
+    /// <history>2013-11-10 Greg Sharp, Add X.509 identity certificate support</history>
     internal class SftpReceiverEndpoint : ReceiverEndpoint
     {
         #region Constants
@@ -300,6 +301,7 @@ namespace Blogical.Shared.Adapters.Sftp
                                         this._properties.SSHUser,
                                         this._properties.SSHPasswordProperty,
                                         this._properties.SSHIdentityFile,
+                                        this._properties.SSHIdentityThumbprint,
                                         this._properties.SSHPort,
                                         this._properties.SSHPassphrase,
                                         this._properties.DebugTrace);
@@ -310,6 +312,7 @@ namespace Blogical.Shared.Adapters.Sftp
                                         this._properties.SSHUser,
                                         this._properties.SSHPasswordProperty,
                                         this._properties.SSHIdentityFile,
+                                        this._properties.SSHIdentityThumbprint,
                                         this._properties.SSHPort,
                                         this._properties.SSHPassphrase,
                                         this._properties.DebugTrace,
@@ -351,9 +354,10 @@ namespace Blogical.Shared.Adapters.Sftp
                 }
                 else
                 {
-                    sftp.Disconnect();
-                    sftp.Dispose();
-                    sftp = null;
+                    // Greg Sharp: Disconnect not needed here (see finally block)
+                    //sftp.Disconnect();
+                    //sftp.Dispose();
+                    //sftp = null;
                     // Used for Connection pool: SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace).ReleaseConnection(sftp);
                     return false;
                 }
@@ -382,6 +386,7 @@ namespace Blogical.Shared.Adapters.Sftp
                     // Create and add message to batch
                     IBaseMessage msg = batchHandler.CreateMessage(fileNamePath, this._properties.Uri, fileEntry.Size, 
                         this._properties.AfterGet, this._properties.AfterGetFilename);
+
                     if (null == msg)
                     {
                         // If the creation was unsuccessful, remove the file from the files to be processed
@@ -391,7 +396,11 @@ namespace Blogical.Shared.Adapters.Sftp
                     }
 
                     // Keep a running total for the current batch
-                    bytesInBatch += fileEntry.Size;
+                    // Greg Sharp: Add stream length not file size because this value may be stale
+                    if (msg.BodyPart.Data.CanSeek)
+                        bytesInBatch += msg.BodyPart.Data.Length;
+                    else
+                        bytesInBatch += fileEntry.Size;
                 }
 
                 // Submit all messages to BTS
@@ -403,14 +412,20 @@ namespace Blogical.Shared.Adapters.Sftp
 
                 return sftp.Exists(CommonFunctions.CombinePath(this._properties.RemotePath, this._properties.FileMask));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                sftp.Disconnect();
-                sftp.Dispose();
-                sftp = null;
+                // Greg Sharp : Test if sftp is null before using
+                if (sftp != null)
+                {
+                    sftp.Disconnect();
+                    sftp.Dispose();
+                    sftp = null;
+                }
                 // Used for Connection pool: SftpConnectionPool.GetHostByName(this._properties.SSHHost, this._properties.DebugTrace).ReleaseConnection(sftp);
 
-                throw ex;
+                // Greg Sharp: Preserve the stack trace
+                //throw ex;
+                throw;
             }
             finally
             {

@@ -19,10 +19,14 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <ModifySolutionConfiguration>true</ModifySolutionConfiguration>
     <BpelCompliance>True</BpelCompliance>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
   </PropertyGroup>
