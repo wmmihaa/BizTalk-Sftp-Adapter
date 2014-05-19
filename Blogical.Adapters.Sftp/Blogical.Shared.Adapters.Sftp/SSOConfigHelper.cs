@@ -52,34 +52,40 @@ namespace Microsoft.SSO.Utility
             properties.Remove(key);
         }
     }
+
+
     public static class SSOConfigHelper
     {
-        private static string idenifierGUID = "ConfigProperties";
-
         /// <summary>
-        /// Read method helps get configuration data
-        /// </summary>        
-        /// <param name="appName">The name of the affiliate application to represent the configuration container to access</param>
-        /// <param name="propName">The property name to read</param>
-        /// <returns>
-        ///  The value of the property stored in the given affiliate application of this component.
-        /// </returns>
-        public static string Read(string appName, string propName)
+        /// Struct to hold username+password credentials.
+        /// </summary>
+        public struct Credentials
         {
+            public string Username;
+            public string Password;
+        }
+
+
+        /// Retrieves the credentials to use.
+        /// </summary>
+        /// <param name="appName">The name of the affiliate application to represent the configuration container to access</param>
+        /// <returns>Credentials to use.</returns>
+        public static Credentials GetCredentials(string appName)
+        {
+            Credentials credentials;
             try
             {
-                SSOConfigStore ssoStore = new SSOConfigStore();
-                ConfigurationPropertyBag appMgmtBag = new ConfigurationPropertyBag();
-                ((ISSOConfigStore)ssoStore).GetConfigInfo(appName, idenifierGUID, SSOFlag.SSO_FLAG_RUNTIME, (IPropertyBag)appMgmtBag);
-                object propertyValue = null;
-                appMgmtBag.Read(propName, out propertyValue, 0);
-                return (string)propertyValue;
+                ISSOLookup1 ssoLookup = (ISSOLookup1)new SSOLookup();
+                string[] passwords;
+                passwords = ssoLookup.GetCredentials(appName, 0, out credentials.Username);
+                credentials.Password = passwords[0];
             }
             catch (Exception e)
             {
                 System.Diagnostics.Trace.WriteLine(e.Message);
                 throw;
             }
+            return credentials;
         }
     }
 }

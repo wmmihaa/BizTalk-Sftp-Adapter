@@ -277,8 +277,9 @@ namespace Blogical.Shared.Adapters.Sftp
                 TraceMessage("[SftpTransmitProperties] SSO Authentication");
                 try
                 {
-                    this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
-                    this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                    SSOConfigHelper.Credentials credentials = SSOConfigHelper.GetCredentials(this._ssoApplication);
+                    this._sshUser = credentials.Username;
+                    this._sshPasswordProperty = credentials.Password;
                 }
                 catch (Exception e)
                 {
@@ -337,8 +338,9 @@ namespace Blogical.Shared.Adapters.Sftp
                 TraceMessage("[SftpTransmitProperties] SSO Authentication");
                 try
                 {
-                    this._sshUser = SSOConfigHelper.Read(this._ssoApplication, "UserName");
-                    this._sshPasswordProperty = SSOConfigHelper.Read(this._ssoApplication, "Password");
+                    SSOConfigHelper.Credentials credentials = SSOConfigHelper.GetCredentials(this._ssoApplication);
+                    this._sshUser = credentials.Username;
+                    this._sshPasswordProperty = credentials.Password;
                 }
                 catch (Exception e)
                 {
