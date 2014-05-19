@@ -21,12 +21,19 @@ namespace Blogical.Shared.Adapters.Sftp.Management
             
             string scriptArgs = "AddResource /Type:System.BizTalk:BizTalkAssembly /Overwrite /Source:\"" + path + "/Blogical.Shared.Adapters.Sftp.Schemas.dll\" /Destination:\"" + path + "/Blogical.Shared.Adapters.Sftp.Schemas.dll\" /Options:GacOnAdd";
 
+            string appName = Context.Parameters["appname"];
+            if (!String.IsNullOrEmpty(appName))
+            {
+                scriptArgs += " /ApplicationName:" + appName;
+            }
+
             SelectBizTalkApplication form = new SelectBizTalkApplication();
             form.TopMost = true;
 
-            if (form.ShowDialog()==DialogResult.Yes)
+            if (!String.IsNullOrEmpty(appName) || form.ShowDialog() == DialogResult.Yes)
             {
-                System.Diagnostics.Process.Start("BTSTask.exe", scriptArgs);
+                System.Diagnostics.Process proc = System.Diagnostics.Process.Start("BTSTask.exe", scriptArgs);
+                proc.WaitForExit();
             }
 
         }
