@@ -1864,7 +1864,7 @@
             "Sequence" = "3:1"
             "Identifier" = "8:_D4CE6450_264C_42D4_9626_927774114A43"
             "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
+            "CustomActionData" = "8:/appName=[APPNAME]"
             }
         }
         "DefaultFeature"
