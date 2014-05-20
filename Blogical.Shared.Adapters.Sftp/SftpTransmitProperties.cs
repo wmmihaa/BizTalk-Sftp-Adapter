@@ -431,7 +431,6 @@ namespace Blogical.Shared.Adapters.Sftp
                 dateTime = dateTime.Replace("/", "-");
                 dateTime = dateTime.Replace(":", "");
                 uri = uri.Replace("%DateTime%", dateTime);
-                //uri = uri.Replace("/", "-");
             }
             if (uri.IndexOf("%UniversalDateTime%") > -1)
             {
@@ -439,7 +438,12 @@ namespace Blogical.Shared.Adapters.Sftp
                 dateTime = dateTime.Replace("/", "-");
                 dateTime = dateTime.Replace(":", "");
                 uri = uri.Replace("%UniversalDateTime%", dateTime);
-                //uri = uri.Replace("/", "-");
+            }
+            // Peter Lindgren 2014-02-12: Added datetime macro that works exactly as the corresponding macro in the standard FTP and FILE adapters.
+            if (uri.IndexOf("%datetime%") > -1)
+            {
+                string dateTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHHmmss");
+                uri = uri.Replace("%datetime%", dateTime);
             }
 
             return uri;
