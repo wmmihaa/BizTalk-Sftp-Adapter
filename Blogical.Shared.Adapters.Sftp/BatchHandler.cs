@@ -315,6 +315,12 @@ namespace Blogical.Shared.Adapters.Sftp
                                             dateTime = dateTime.Replace(":", "");
                                             renameFileName = renameFileName.Replace("%UniversalDateTime%", dateTime);   
                                         }
+                                        // Peter Lindgren 2014-05-22: Added datetime macro that works exactly as the corresponding macro in the standard FTP and FILE adapters.
+                                        if (renameFileName.IndexOf("%datetime%") > -1)
+                                        {
+                                            string dateTime = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHHmmss");
+                                            renameFileName = renameFileName.Replace("%datetime%", dateTime);
+                                        }
 
                                         this._sftp.Rename(fileName, renameFileName);
                                     }
