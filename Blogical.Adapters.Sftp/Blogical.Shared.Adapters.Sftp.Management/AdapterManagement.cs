@@ -113,7 +113,7 @@ namespace Blogical.Shared.Adapters.Sftp.Management
         }
 
         /// <summary>
-        /// Validate xmlInstance against configuration.  In this example it does nothing.
+        /// Validate xmlInstance against configuration.
         /// </summary>
         /// <param name="configType">Type of port or location being configured</param>
         /// <param name="xmlInstance">Instance value to be validated</param>
@@ -170,6 +170,7 @@ namespace Blogical.Shared.Adapters.Sftp.Management
             nodeHost.InnerText = ValidateReceiveLocation(document1);
             return document1.OuterXml;
         }
+
         internal static string ValidateReceiveLocation(XmlDocument doc)
         {
 
@@ -189,8 +190,28 @@ namespace Blogical.Shared.Adapters.Sftp.Management
                 ((nodeIdentityFile == null) || (nodeIdentityFile.InnerText.Length == 0)) &&
                 ((nodeIdentityThumbprint == null) || (nodeIdentityThumbprint.InnerText.Length == 0)) &&
                 ((nodeSsoApplication == null) || (nodeSsoApplication.InnerText.Length == 0)))
-                throw new Exception("You must specify either Password, IdentityFile or IdentityThumbprint or SSO Application");
+                throw new Exception("You must specify either Password, IdentityFile, IdentityThumbprint, or SSO Application");
 
+            // Default values for After Get Actions:
+            string textAfterGetAction = "";
+            XmlNode nodeAfterGetAction = GetNode(doc, "aftergetaction", false);
+            if ((nodeAfterGetAction != null) && (nodeAfterGetAction.InnerText.Length > 0))
+            {
+                textAfterGetAction = nodeAfterGetAction.InnerText;
+            }
+            // Check for invalid actions: (the Enum.IsDefined doesn't have an overload for ignore case, as Enum.Parse has)
+            // Empty string is allowed, see SftpReceiveProperties for details.
+            if ((!String.IsNullOrEmpty(textAfterGetAction)))
+            {
+                try
+                {
+                    SftpReceiveProperties.AfterGetActions afterGetAction = (SftpReceiveProperties.AfterGetActions)Enum.Parse(typeof(SftpReceiveProperties.AfterGetActions), textAfterGetAction, true);
+                }
+                catch (ArgumentException)
+                {
+                    throw new Exception("You must specify an After Get Action: Delete, Rename or DoNothing. Empty field equals DoNothing.");
+                }
+            }
 
             StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
             if ((nodePort != null) && (nodePort.InnerText.Length > 0))
