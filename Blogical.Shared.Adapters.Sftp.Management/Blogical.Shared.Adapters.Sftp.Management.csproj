@@ -109,6 +109,16 @@
       <LastGenOutput>SftpResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Blogical.Shared.Adapters.Common\Blogical.Shared.Adapters.Common.csproj">
+      <Project>{44B780E7-6D79-4BAF-9994-28CFFA1172A6}</Project>
+      <Name>Blogical.Shared.Adapters.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Blogical.Shared.Adapters.Sftp\Blogical.Shared.Adapters.Sftp.csproj">
+      <Project>{7955A7CC-4C23-4DA1-B94C-5F176A56811D}</Project>
+      <Name>Blogical.Shared.Adapters.Sftp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
