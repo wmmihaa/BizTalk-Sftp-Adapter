@@ -28,7 +28,7 @@ namespace Blogical.Shared.Adapters.Sftp
             "1.0",
             "Submits files from ssh server into BizTalk",
             "Blogical.Shared.Adapters.Sftp",
-            new Guid("a55cbe83-f168-435a-b63e-a506df52e7ef"),
+            new Guid("BD264AA5-AE68-4E3E-8E7F-772A3F3029B7"),
             "http://schemas.microsoft.com/BizTalk/2006/sftp-properties",
            typeof(SftpReceiverEndpoint))
         {

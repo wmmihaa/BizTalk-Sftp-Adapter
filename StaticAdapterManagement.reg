@@ -1,0 +1,37 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\CLSID\{0FA93583-C9C4-48DE-B7F3-D094915C4462}]
+@="Blogical.Shared.Adapters.Sftp adapter v1"
+"AppID"="{07E88C47-63F1-4166-918C-8F2F99A070FF}"
+
+[HKEY_CLASSES_ROOT\CLSID\{0FA93583-C9C4-48DE-B7F3-D094915C4462}\BizTalk]
+@="BizTalk"
+"TransportType"="Blogical.Shared.Adapters.Sftp v1"
+"Constraints"=dword:00003C0b
+
+"InboundProtocol_PageProv"="{2DE93EE6-CB01-4007-93E9-C3D71689A281}"
+"OutboundProtocol_PageProv"="{2DE93EE6-CB01-4007-93E9-C3D71689A283}"
+"ReceiveLocation_PageProv"="{2DE93EE6-CB01-4007-93E9-C3D71689A280}"
+"TransmitLocation_PageProv"="{2DE93EE6-CB01-4007-93E9-C3D71689A282}"
+
+"InboundEngineCLSID"="{BD264AA5-AE68-4E3E-8E7F-772A3F3029B7}"
+"InboundTypeName"="Blogical.Shared.Adapters.Sftp.SftpReceiver"
+"InboundAssemblyPath"="C:\\DEV\\Pet Projects\\File Adapter\\Runtime\\bin\\Debug\\Blogical.Shared.Adapters.Sftp.dll"
+"OutboundEngineCLSID"="{B87740B8-9C92-455F-827A-74730A9A947B}"
+"OutboundTypeName"="Blogical.Shared.Adapters.Sftp.SftpTransmitter"
+"OutboundAssemblyPath"="C:\\DEV\\Pet Projects\\File Adapter\\Runtime\\bin\\Debug\\Blogical.Shared.Adapters.Sftp.dll"
+
+"AdapterMgmtTypeName"="Blogical.Shared.Adapters.Sftp.Management.StaticAdapterManagement"
+"AdapterMgmtAssemblyPath"="C:\\DEV\\Pet Projects\\File Adapter\\Design Time\\Adapter Management\\bin\\Debug\\Blogical.Shared.Adapters.Sftp.Management.dll"
+
+"PropertyNameSpace"="Blogical.Shared.Adapters.Sftp"
+"AliasesXML"="<AdapterAliasList><AdapterAlias>BSFTP://</AdapterAlias></AdapterAliasList>"
+"ReceiveHandlerPropertiesXML"="<CustomProps><AdapterConfig vt=\"8\"/></CustomProps>"
+"SendHandlerPropertiesXML"="<CustomProps><AdapterConfig vt=\"8\"/></CustomProps>"
+"ReceiveLocationPropertiesXML"="<CustomProps><AdapterConfig vt=\"8\"/></CustomProps>"
+"SendLocationPropertiesXML"="<CustomProps><AdapterConfig vt=\"8\"/></CustomProps>"
+
+
+[HKEY_CLASSES_ROOT\CLSID\{0FA93583-C9C4-48DE-B7F3-D094915C4462}\Implemented Categories]
+
+[HKEY_CLASSES_ROOT\CLSID\{0FA93583-C9C4-48DE-B7F3-D094915C4462}\Implemented Categories\{7F46FC3E-3C2C-405B-A47F-8D17942BA8F9}]

@@ -1,0 +1,11 @@
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\bin\Debug\Tamir.SharpSSH.dll
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\bin\Debug\Tamir.SharpSSH.pdb
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\bin\Debug\DiffieHellman.dll
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\bin\Debug\Org.Mentalis.Security.dll
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\SharpSSH.csprojAssemblyReference.cache
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\Tamir.SharpSsh.jsch.examples.InputForm.resources
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\SharpSSH.csproj.GenerateResource.cache
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\SharpSSH.csproj.CoreCompileInputs.cache
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\SharpSSH.csproj.CopyComplete
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\Tamir.SharpSSH.dll
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\SharpSSH-1.1.1.13.src\obj\Debug\Tamir.SharpSSH.pdb

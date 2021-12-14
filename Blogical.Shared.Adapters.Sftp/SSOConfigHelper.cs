@@ -21,6 +21,7 @@
 //---------------------------------------------------------------------
 
 
+
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -28,6 +29,7 @@ using Microsoft.BizTalk.SSOClient.Interop;
 
 namespace Microsoft.SSO.Utility
 {
+
     public class ConfigurationPropertyBag : IPropertyBag
     {
         private HybridDictionary properties;

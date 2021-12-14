@@ -213,7 +213,7 @@ namespace Blogical.Shared.Adapters.Sftp.Management
                 }
             }
 
-            StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
+            StringBuilder builder1 = new StringBuilder("BSFTP://" + nodeHost.InnerText);
             if ((nodePort != null) && (nodePort.InnerText.Length > 0))
             {
                 builder1.Append(":" + nodePort.InnerText);
@@ -270,7 +270,7 @@ namespace Blogical.Shared.Adapters.Sftp.Management
                 ((nodeSsoApplication == null) || (nodeSsoApplication.InnerText.Length == 0)))
                 throw new Exception("You must specify either Password, IdentityFile or IdentityThumbprint or SSO Application");
 
-            StringBuilder builder1 = new StringBuilder("SFTP://" + nodeHost.InnerText);
+            StringBuilder builder1 = new StringBuilder("BSFTP://" + nodeHost.InnerText);
             if (nodePort.InnerText.Length > 0)
             {
                 builder1.Append(":" + nodePort.InnerText);

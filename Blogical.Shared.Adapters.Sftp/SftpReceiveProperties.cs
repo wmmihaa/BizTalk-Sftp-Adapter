@@ -162,11 +162,11 @@ namespace Blogical.Shared.Adapters.Sftp
             get { return this._maximumbatchsize; }
         }
         /// <summary>
-        /// Complete path and filemask. sftp://[host]:[port]/[remotepath]/[filemsk]
+        /// Complete path and filemask. BSFTP://[host]:[port]/[remotepath]/[filemsk]
         /// </summary>
         public string Uri
         {
-            get { return CommonFunctions.CombinePath("SFTP://" + this.SSHHost + ":" + this.SSHPort, this.RemotePath, this.FileMask); }
+            get { return CommonFunctions.CombinePath("BSFTP://" + this.SSHHost + ":" + this.SSHPort, this.RemotePath, this.FileMask); }
         }
         /// <summary>
         /// 
