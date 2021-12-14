@@ -160,7 +160,7 @@ namespace Blogical.Shared.Adapters.Sftp
         {
             get
             {
-                return CommonFunctions.CombinePath("SFTP://" + this.SSHHost + ":" + this.SSHPort, this.RemotePath, this.RemoteFile);
+                return CommonFunctions.CombinePath("BSFTP://" + this.SSHHost + ":" + this.SSHPort, this.RemotePath, this.RemoteFile);
             }
         }
         /// <summary>

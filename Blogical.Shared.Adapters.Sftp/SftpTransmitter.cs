@@ -19,11 +19,11 @@ namespace Blogical.Shared.Adapters.Sftp
 		/// </summary>
         public SftpTransmitter()
             : base(
-			"Sftp Transmit Adapter",
+			"S\ftp Transmit Adapter",
 			"1.0",
 			"Send files from BizTalk to ssh server",
             "Blogical.Shared.Adapters.Sftp",
-            new Guid("225d6dd3-ea0f-49db-942a-61c078e7c8c0"),
+            new Guid("B87740B8-9C92-455F-827A-74730A9A947B"),
             "Blogical.Shared.Adapters.Sftp",
 			typeof(SftpTransmitterEndpoint),
 			SftpTransmitProperties.BatchSize)

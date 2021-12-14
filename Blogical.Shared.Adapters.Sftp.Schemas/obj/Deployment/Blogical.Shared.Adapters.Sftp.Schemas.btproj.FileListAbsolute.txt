@@ -1,0 +1,6 @@
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\Blogical.Shared.Adapters.Sftp.Schemas\bin\Deployment\Blogical.Shared.Adapters.Sftp.Schemas.dll.config
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\Blogical.Shared.Adapters.Sftp.Schemas\bin\Deployment\Blogical.Shared.Adapters.Sftp.Schemas.dll
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\Blogical.Shared.Adapters.Sftp.Schemas\bin\Deployment\Blogical.Shared.Adapters.Sftp.Schemas.pdb
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\Blogical.Shared.Adapters.Sftp.Schemas\obj\Deployment\Blogical.Shared.Adapters.Sftp.Schemas.btproj.CoreCompileInputs.cache
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\Blogical.Shared.Adapters.Sftp.Schemas\obj\Deployment\Blogical.Shared.Adapters.Sftp.Schemas.dll
+C:\DEV\Adapters\BizTalk-Sftp-Adapter\Blogical.Shared.Adapters.Sftp.Schemas\obj\Deployment\Blogical.Shared.Adapters.Sftp.Schemas.pdb
